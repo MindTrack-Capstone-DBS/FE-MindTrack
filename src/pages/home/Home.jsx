@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Home.css';
+import logo2 from '../../assets/images/logo_2-removebg-preview 1.png';
 
 const Home = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // This should be managed by your auth system
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const auth = localStorage.getItem('isAuthenticated') === 'true';
+    setIsLoggedIn(auth);
+  }, []);
 
   const handleSignIn = () => {
     navigate('/login');
@@ -23,8 +29,9 @@ const Home = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
     setIsLoggedIn(false);
-    // Add your logout logic here
+    navigate('/login');
   };
 
   return (
@@ -38,7 +45,7 @@ const Home = () => {
         }}
       >
         <div className="logo-section">
-          <img src="/Logo/logo_2-removebg-preview 1.png" alt="MindTrack Logo" className="logo" />
+          <img src={logo2} alt="MindTrack Logo" className="logo" />
         </div>
         <nav className="nav-links">
           <Link to="/">Beranda</Link>

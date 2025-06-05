@@ -7,15 +7,30 @@ import Profile from './pages/profile/Profile';
 import './App.css';
 
 function App() {
+  // Check if user is logged in
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
   return (
     <Router>
       <div className="App">
         <Routes>
-          {/* Redirect otomatis ke halaman Profile */}
-          <Route path="/" element={<Navigate to="/profile" />} />
+          {/* Default route - redirect to login if not authenticated, home if authenticated */}
+          <Route 
+            path="/" 
+            element={
+              isAuthenticated ? (
+                <Navigate to="/home" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            } 
+          />
 
+          {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Home and Profile now public */}
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
