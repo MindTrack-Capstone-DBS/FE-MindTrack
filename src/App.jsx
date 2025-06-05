@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/login/Login';
-import Register from './pages/login/Register';
+import LoginPage from './pages/Login-Page/LoginPage';
+import Register from './pages/Register-Page/RegisterPage';
 import Home from './pages/home/Home';
 import Profile from './pages/profile/Profile';
 import './App.css';
@@ -15,19 +15,10 @@ function App() {
       <div className="App">
         <Routes>
           {/* Default route - redirect to login if not authenticated, home if authenticated */}
-          <Route 
-            path="/" 
-            element={
-              isAuthenticated ? (
-                <Navigate to="/home" replace />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } 
-          />
+          <Route path="/" element={isAuthenticated ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />} />
 
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
 
           {/* Home and Profile now public */}
