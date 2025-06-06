@@ -4,6 +4,7 @@ import LoginPage from './pages/Login-Page/LoginPage';
 import Register from './pages/Register-Page/RegisterPage';
 import Home from './pages/home/Home';
 import Profile from './pages/profile/Profile';
+import ChatBox from './pages/chatbox/ChatBox';
 import './App.css';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           {/* Home and Profile now public */}
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/chat" element={<ChatBox />} />
         </Routes>
       </div>
     </Router>
