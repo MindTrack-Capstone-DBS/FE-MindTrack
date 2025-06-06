@@ -20,16 +20,54 @@ function AuthForm({ isLogin = true }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      // Login logic
-      localStorage.setItem('isAuthenticated', 'true');
-      navigate('/home');
-    } else {
-      // Register logic
-      console.log('Register data:', formData);
-      navigate('/login');
+    try {
+      if (isLogin) {
+        // Login logic
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userData', JSON.stringify(data.user));
+          navigate('/home');
+        } else {
+          alert(data.message || 'Login gagal');
+        }
+      } else {
+        // Register logic
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Registrasi berhasil! Silakan login.');
+          navigate('/login');
+        } else {
+          alert(data.message || 'Registrasi gagal');
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Terjadi kesalahan. Silakan coba lagi.');
     }
   };
 
@@ -38,9 +76,9 @@ function AuthForm({ isLogin = true }) {
   };
 
   return (
-    <div className="w-1/2 flex justify-center items-center bg-white overflow-x-hidden">
+    <div className="w-full md:w-1/2 flex justify-center items-center bg-white overflow-x-hidden p-4 md:p-0">
       <div className="w-full max-w-sm">
-        <h2 className="text-xl mb-15 font-sans text-left absolute top-10 left-10">
+        <h2 className="text-xl mb-15 font-sans text-center md:text-left md:absolute md:top-10 md:left-10">
           <b>MindTrack</b> - <span className="text-blue-900 font-bold">Track Your Stress</span>
         </h2>
         <p className="text-4xl font-bold mb-10 mt-20 text-center text-gray font-sans">{isLogin ? 'Login' : 'Register'}</p>

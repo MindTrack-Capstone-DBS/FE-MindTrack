@@ -4,7 +4,7 @@ import AuthForm from '../../components/AuthForm';
 
 function LoginPage() {
   return (
-    <div className="flex flex-row min-h-screen bg-white">
+    <div className="flex flex-col md:flex-row min-h-screen bg-white">
       <AuthForm isLogin={true} />
       <AuthBanner />
     </div>
