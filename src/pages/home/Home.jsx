@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import logo2 from '../../assets/images/Logo-cropped.png';
+import Navbar from '../../components/Navbar';
 import headerBg from '../../assets/img/HDMindsMHFAcrop 1.jpg';
 import pngtreeImg from '../../assets/images/pngtree-mental-health-depressed-man-on-floor-illustration-health-problem-worried-vector-png-image_50652722 1.png';
 import { Facebook, Linkedin, Youtube, Instagram } from 'lucide-react';
@@ -48,17 +48,7 @@ const Home = () => {
         }}
       >
         <div className="absolute inset-0 bg-blue-900/35 rounded-b-3xl z-0"></div>
-        <nav className="fixed top-0 left-0 right-0 z-30 w-full flex items-center justify-between px-8 md:px-14 py-4 md:py-6 max-w-[1440px] mx-auto" style={{background: 'transparent'}}>
-          <div className="flex items-center gap-2">
-            <img src={logo2} alt="MindTrack Logo" className="w-60 max-w-full h-auto object-contain m-0 bg-none" />
-          </div>
-          <div className="flex items-center gap-9">
-            <Link to="/" className="text-white font-semibold text-lg hover:text-blue-200 transition">Beranda</Link>
-            <Link to="/chat" className="text-white font-semibold text-lg hover:text-blue-200 transition">ChatBox</Link>
-            <button className="bg-blue-900 text-white rounded-xl px-8 py-3 font-semibold text-base mr-2 hover:bg-blue-800 transition" onClick={handleSignIn}>Sign In</button>
-            <button className="bg-white text-blue-900 border-2 border-blue-900 rounded-xl px-8 py-3 font-semibold text-base hover:bg-blue-900 hover:text-white transition" onClick={handleSignUp}>Sign Up</button>
-          </div>
-        </nav>
+        <Navbar variant="light" />
       </header>
       <section className="flex flex-col md:flex-row items-center justify-center gap-16 py-20 px-6 max-w-5xl mx-auto w-full">
         <div className="flex-shrink-0 flex items-center justify-center relative w-[320px] h-[320px] md:w-[320px] md:h-[320px]">
