@@ -5,7 +5,7 @@ import headerBg from '../../assets/img/HDMindsMHFAcrop 1.jpg';
 import pngtreeImg from '../../assets/images/pngtree-mental-health-depressed-man-on-floor-illustration-health-problem-worried-vector-png-image_50652722 1.png';
 import { Facebook, Linkedin, Youtube, Instagram } from 'lucide-react';
 
-const Home = () => {
+const LandingPage = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -117,4 +117,4 @@ const Home = () => {
   );
 };
 
-export default Home; 
+export default LandingPage; 

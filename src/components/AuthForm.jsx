@@ -42,7 +42,7 @@ function AuthForm({ isLogin = true }) {
           localStorage.setItem('isAuthenticated', 'true');
           localStorage.setItem('token', data.token);
           localStorage.setItem('userData', JSON.stringify(data.user));
-          navigate('/home');
+          navigate('/landing');
         } else {
           alert(data.message || 'Login gagal');
         }
