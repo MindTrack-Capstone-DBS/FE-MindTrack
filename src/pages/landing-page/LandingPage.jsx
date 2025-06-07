@@ -49,6 +49,10 @@ const LandingPage = () => {
       >
         <div className="absolute inset-0 bg-blue-900/35 rounded-b-3xl z-0"></div>
         <Navbar variant="light" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 drop-shadow-lg">Track Your Mental Wellbeing</h1>
+          <p className="text-lg md:text-2xl text-white/90 max-w-2xl mx-auto drop-shadow">Monitor your daily emotional state and get personalized suggestions for maintaining mental wellness.</p>
+        </div>
       </header>
       <section className="flex flex-col md:flex-row items-center justify-center gap-16 py-20 px-6 max-w-5xl mx-auto w-full">
         <div className="flex-shrink-0 flex items-center justify-center relative w-[320px] h-[320px] md:w-[320px] md:h-[320px]">

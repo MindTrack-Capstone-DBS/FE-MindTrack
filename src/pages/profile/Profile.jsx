@@ -1,242 +1,84 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Profile.css';
+import SidebarProfile from '../../components/SidebarProfile';
+import ProfileHeader from '../../components/ProfileHeader';
+import ProfileForm from '../../components/ProfileForm';
 
 const Profile = () => {
-  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('account');
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
-    name: "Yongky",
-    email: "yongky@example.com",
-    phone: "+62 812-3456-7890",
-    stressLevel: 65,
-    profileImage: null
+    name: 'Yongky',
+    email: 'yongky@example.com',
+    phone: '+62 812-3456-7890',
+    gender: 'Male',
+    birthdate: { day: '26', month: 'November', year: '2003' },
+    city: 'Jakarta',
   });
+  const [editedData, setEditedData] = useState({ ...userData });
 
-  const [editedData, setEditedData] = useState({...userData});
+  const genderOptions = ['Male', 'Female', 'Other'];
+  const days = Array.from({ length: 31 }, (_, i) => String(i + 1));
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ];
+  const years = Array.from({ length: 100 }, (_, i) => String(2024 - i));
 
-  const getStressLevelColor = (percentage) => {
-    if (percentage < 40) return '#4CAF50';
-    if (percentage < 70) return '#FFC107';
-    return '#F44336';
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditedData({ ...userData });
   };
-
-  const getStressLevelLabel = (percentage) => {
-    if (percentage < 40) return 'Rendah';
-    if (percentage < 70) return 'Sedang';
-    return 'Tinggi';
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedData({ ...userData });
   };
-
-  const handleBackToHome = () => {
-    navigate('/landing');
+  const handleSave = () => {
+    setUserData({ ...editedData });
+    setIsEditing(false);
   };
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUserData(prev => ({
-          ...prev,
-          profileImage: reader.result
-        }));
-      };
-      reader.readAsDataURL(file);
+  const handleChange = (field, value) => {
+    if (field === 'birthdate') {
+      setEditedData((prev) => ({ ...prev, birthdate: { ...prev.birthdate, ...value } }));
+    } else {
+      setEditedData((prev) => ({ ...prev, [field]: value }));
     }
   };
-
-  const handleEditProfile = () => {
-    setIsEditing(true);
-    setEditedData({...userData});
-  };
-
-  const handleSaveProfile = () => {
-    setUserData(editedData);
-    setIsEditing(false);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-    setEditedData({...userData});
-  };
-
-  const handleInputChange = (field, value) => {
-    setEditedData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const handleEditPhoto = () => {
+    alert('Fitur edit foto profile coming soon!');
   };
 
   return (
-    <div className="profile-page">
-      <div className="profile-background"></div>
-      
-      <header className="profile-header">
-        <div className="header-content">
-          <button className="back-button" onClick={handleBackToHome}>
-            <i className="fas fa-arrow-left"></i>
-            <span>Kembali</span>
-          </button>
-          <h1>Profil Pengguna</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col md:flex-row font-sans">
+      <SidebarProfile userData={userData} onEditPhoto={handleEditPhoto} />
+      <main className="flex-1 flex flex-col items-center py-10 px-4 md:px-16">
+        <div className="w-full max-w-2xl">
+          <ProfileHeader />
+          <div className="flex gap-8 border-b border-blue-100 mb-8">
+            <button onClick={() => setActiveTab('account')} className={`pb-2 font-semibold transition ${activeTab === 'account' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>Informasi Akun</button>
+            <button onClick={() => setActiveTab('security')} className={`pb-2 font-semibold transition ${activeTab === 'security' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>Keamanan & Password</button>
+          </div>
+          {activeTab === 'account' && (
+            <ProfileForm
+              isEditing={isEditing}
+              editedData={editedData}
+              handleChange={handleChange}
+              handleEdit={handleEdit}
+              handleSave={handleSave}
+              handleCancel={handleCancel}
+              genderOptions={genderOptions}
+              days={days}
+              months={months}
+              years={years}
+            />
+          )}
+          {activeTab === 'security' && (
+            <div className="bg-white rounded-2xl shadow p-8 mb-8">
+              <h2 className="text-lg font-bold text-blue-900 mb-6">Keamanan & Password</h2>
+              <p className="text-blue-900">Fitur pengaturan password dan keamanan akan segera hadir.</p>
+            </div>
+          )}
         </div>
-      </header>
-
-      <div className="profile-container">
-        <div className="profile-card">
-          <div className="profile-avatar">
-            <div className="avatar-circle">
-              {userData.profileImage ? (
-                <img src={userData.profileImage} alt="Profile" className="profile-image" />
-              ) : (
-                <i className="fas fa-user"></i>
-              )}
-            </div>
-            <div className="avatar-actions">
-              <label className="upload-button">
-                <i className="fas fa-camera"></i>
-                <span>Ubah Foto</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            </div>
-          </div>
-          
-          <div className="profile-info">
-            <div className="info-header">
-              <h2>Informasi Pribadi</h2>
-              {!isEditing ? (
-                <button className="edit-button" onClick={handleEditProfile}>
-                  <i className="fas fa-edit"></i>
-                  <span>Edit Profil</span>
-                </button>
-              ) : (
-                <div className="edit-actions">
-                  <button className="save-button" onClick={handleSaveProfile}>
-                    <i className="fas fa-check"></i>
-                    <span>Simpan</span>
-                  </button>
-                  <button className="cancel-button" onClick={handleCancelEdit}>
-                    <i className="fas fa-times"></i>
-                    <span>Batal</span>
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="info-group">
-              <label>Nama Lengkap</label>
-              {isEditing ? (
-                <input
-                  type="text"
-                  className="edit-input"
-                  value={editedData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  placeholder="Masukkan nama lengkap"
-                />
-              ) : (
-                <div className="info-value">
-                  <i className="fas fa-user-circle"></i>
-                  {userData.name}
-                </div>
-              )}
-            </div>
-            
-            <div className="info-group">
-              <label>Email</label>
-              {isEditing ? (
-                <input
-                  type="email"
-                  className="edit-input"
-                  value={editedData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="Masukkan email"
-                />
-              ) : (
-                <div className="info-value">
-                  <i className="fas fa-envelope"></i>
-                  {userData.email}
-                </div>
-              )}
-            </div>
-            
-            <div className="info-group">
-              <label>Nomor Telepon</label>
-              {isEditing ? (
-                <input
-                  type="tel"
-                  className="edit-input"
-                  value={editedData.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  placeholder="Masukkan nomor telepon"
-                />
-              ) : (
-                <div className="info-value">
-                  <i className="fas fa-phone"></i>
-                  {userData.phone}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="stress-section">
-            <h2>Statistik Tingkat Stres</h2>
-            <div className="stress-block">
-              <div className="stress-level-container">
-                <div 
-                  className="stress-level" 
-                  style={{ 
-                    width: `${userData.stressLevel}%`,
-                    backgroundColor: getStressLevelColor(userData.stressLevel)
-                  }}
-                />
-              </div>
-              <div className="stress-info">
-                <div className="stress-percentage">{userData.stressLevel}%</div>
-                <div className="stress-label" style={{ color: getStressLevelColor(userData.stressLevel) }}>
-                  {getStressLevelLabel(userData.stressLevel)}
-                </div>
-              </div>
-            </div>
-
-            <div className="stress-legend">
-              <div className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: '#4CAF50' }}></div>
-                <span>Rendah</span>
-              </div>
-              <div className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: '#FFC107' }}></div>
-                <span>Sedang</span>
-              </div>
-              <div className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: '#F44336' }}></div>
-                <span>Tinggi</span>
-              </div>
-            </div>
-
-            <div className="stress-recommendations">
-              <h3>Rekomendasi</h3>
-              <div className="recommendation-list">
-                <div className="recommendation-item">
-                  <i className="fas fa-walking"></i>
-                  <span>Berjalan-jalan selama 15 menit</span>
-                </div>
-                <div className="recommendation-item">
-                  <i className="fas fa-music"></i>
-                  <span>Dengarkan musik yang menenangkan</span>
-                </div>
-                <div className="recommendation-item">
-                  <i className="fas fa-spa"></i>
-                  <span>Lakukan latihan pernapasan</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   );
 };
