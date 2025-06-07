@@ -28,7 +28,7 @@ const Profile = () => {
   };
 
   const handleBackToHome = () => {
-    navigate('/');
+    navigate('/landing');
   };
 
   const handleImageUpload = (event) => {
