@@ -1,10 +1,20 @@
-import React from "react";
-import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+import React, { useState } from "react";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Youtube,
+  ChevronDown,
+  ChevronUp,
+  NotebookPen,
+  BookText
+} from "lucide-react";
 
 const MoodJournal = () => {
+const [isJournalMenuOpen, setIsJournalMenuOpen] = useState(false);
+
 return (
 <div className="min-h-screen bg-gray-50 flex flex-col relative">
-    {/* Main Content Area */}
     <div className="flex flex-1">
     {/* Sidebar */}
     <aside className="w-64 bg-white shadow-lg p-6 flex flex-col gap-8">
@@ -24,13 +34,43 @@ return (
             <span className="text-lg">💬</span>
             Chatbox
         </a>
-        <a
-            href="/journal"
-            className="bg-blue-600 text-white rounded-lg px-4 py-2 flex items-center gap-2"
-        >
-            <span className="text-lg">📓</span>
-            Journal
-        </a>
+
+        {/* Journal Dropdown */}
+        <div>
+            <button
+            onClick={() => setIsJournalMenuOpen(!isJournalMenuOpen)}
+            className="w-full flex items-center justify-between px-4 py-2 rounded-lg bg-blue-600 text-white transition"
+            >
+            <div className="flex items-center gap-2">
+                <NotebookPen className="w-5 h-5" />
+                <span>Journal</span>
+            </div>
+            {isJournalMenuOpen ? (
+                <ChevronUp className="w-4 h-4" />
+            ) : (
+                <ChevronDown className="w-4 h-4" />
+            )}
+            </button>
+
+            {isJournalMenuOpen && (
+            <div className="mt-2 ml-6 flex flex-col gap-2 text-sm text-blue-900">
+                <a
+                href="/journal"
+                className="flex items-center gap-2 px-2 py-1 rounded hover:bg-blue-100 transition"
+                >
+                <NotebookPen className="w-4 h-4" />
+                Journal Entry
+                </a>
+                <a
+                href="/journal/history"
+                className="flex items-center gap-2 px-2 py-1 rounded hover:bg-blue-100 transition"
+                >
+                <BookText className="w-4 h-4" />
+                Riwayat Jurnal
+                </a>
+            </div>
+            )}
+        </div>
         </nav>
     </aside>
 

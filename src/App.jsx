@@ -7,6 +7,7 @@ import Profile from './pages/profile/Profile';
 import ChatBox from './pages/chatbox/ChatBox';
 import MoodJournal from "./pages/journal/MoodJournal";
 import './App.css';
+import JournalHistory from './pages/journal/JournalHistory';
 
 function App() {
   // Check if user is logged in
@@ -28,6 +29,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/chat" element={<ChatBox />} />
           <Route path="/journal" element={<MoodJournal />} />
+          <Route path="/journal/history" element={<JournalHistory />} />
         </Routes>
       </div>
     </Router>
