@@ -5,6 +5,7 @@ import Register from './pages/Register-Page/RegisterPage';
 import LandingPage from './pages/landing-page/LandingPage';
 import Profile from './pages/profile/Profile';
 import ChatBox from './pages/chatbox/ChatBox';
+import MoodJournal from "./pages/journal/MoodJournal";
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/chat" element={<ChatBox />} />
+          <Route path="/journal" element={<MoodJournal />} />
         </Routes>
       </div>
     </Router>
