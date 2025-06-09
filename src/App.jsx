@@ -14,24 +14,67 @@ function App() {
   // Check if user is logged in
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
+  // Protected Route component
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  };
+
   return (
     <Router>
       <div className="App">
         <Routes>
-          {/* Default route - redirect to login if not authenticated, home if authenticated */}
-          <Route path="/" element={<LandingPage />} />
+          {/* Default route - redirect to dashboard if authenticated, landing if not */}
+          <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
 
           {/* Public routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
-
-          {/* Home and Profile now public */}
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LoginPage />} />
+          <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} />
           <Route path="/landing" element={<LandingPage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/chat" element={<ChatBox />} />
-          <Route path="/journal" element={<MoodJournal />} />
-          <Route path="/journal/history" element={<JournalHistory />} />
+
+          {/* Protected routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <ChatBox />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/journal"
+            element={
+              <ProtectedRoute>
+                <MoodJournal />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/journal/history"
+            element={
+              <ProtectedRoute>
+                <JournalHistory />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </Router>

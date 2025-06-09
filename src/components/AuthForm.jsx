@@ -39,15 +39,20 @@ function AuthForm({ isLogin = true }) {
         const data = await response.json();
 
         if (response.ok) {
+          // Simpan data autentikasi
           localStorage.setItem('isAuthenticated', 'true');
           localStorage.setItem('token', data.token);
           localStorage.setItem('userData', JSON.stringify(data.user));
-          navigate('/landing');
+
+          alert('Login berhasil!');
+
+          window.location.href = '/dashboard';
+          window.location.reload();
         } else {
           alert(data.message || 'Login gagal');
         }
       } else {
-        // Register logic
+        // Register logic - tidak perlu diubah
         const response = await fetch('http://localhost:5000/api/auth/register', {
           method: 'POST',
           headers: {
@@ -75,6 +80,7 @@ function AuthForm({ isLogin = true }) {
     navigate(isLogin ? '/register' : '/login');
   };
 
+  // Kode return tidak berubah
   return (
     <div className="w-full md:w-1/2 flex justify-center items-center bg-white overflow-x-hidden p-4 md:p-0">
       <div className="w-full max-w-sm">

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { Clock, Timer, Search, Bell, User, LogOut, Settings, ChevronDown, BarChart2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+// Register ChartJS components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const DashboardContent = ({ userData, dashboardData }) => {
   const navigate = useNavigate();
@@ -18,10 +23,65 @@ const DashboardContent = ({ userData, dashboardData }) => {
     { day: 'Min', value: 3.0 },
   ];
 
+  // Konfigurasi chart untuk tampilan bulanan
+  const monthlyChartData = {
+    labels: dashboardData.monthlyMood.map((item) => item.month),
+    datasets: [
+      {
+        label: 'Mood Level',
+        data: dashboardData.monthlyMood.map((item) => item.value),
+        backgroundColor: dashboardData.monthlyMood.map((item) => (item.value === 4 ? 'rgba(20, 184, 166, 0.8)' : 'rgba(209, 213, 219, 0.8)')),
+        borderColor: dashboardData.monthlyMood.map((item) => (item.value === 4 ? 'rgb(13, 148, 136)' : 'rgb(156, 163, 175)')),
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+    ],
+  };
+
+  // Konfigurasi chart untuk tampilan harian
+  const dailyChartData = {
+    labels: dailyMood.map((item) => item.day),
+    datasets: [
+      {
+        label: 'Mood Level',
+        data: dailyMood.map((item) => item.value),
+        backgroundColor: dailyMood.map((item) => (item.value === 4 ? 'rgba(20, 184, 166, 0.8)' : 'rgba(96, 165, 250, 0.8)')),
+        borderColor: dailyMood.map((item) => (item.value === 4 ? 'rgb(13, 148, 136)' : 'rgb(59, 130, 246)')),
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+    ],
+  };
+
+  // Opsi chart
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 5,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+    },
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('token');
     localStorage.removeItem('userData');
-    navigate('/'); // Navigasi ke landing page
+    navigate('/');
+    window.location.reload();
   };
 
   const toggleProfileMenu = () => {
@@ -158,31 +218,9 @@ const DashboardContent = ({ userData, dashboardData }) => {
             </div>
           </div>
 
-          {/* Bar Chart */}
-          <div className="h-64 flex items-end justify-between">
-            {moodViewType === 'month'
-              ? // Monthly view
-                dashboardData.monthlyMood.map((item, index) => {
-                  const height = (item.value / 4) * 100;
-                  const isHighest = item.value === 4;
-                  return (
-                    <div key={index} className="flex flex-col items-center">
-                      <div className={`w-6 rounded-t-md ${isHighest ? 'bg-teal-500' : 'bg-gray-300'}`} style={{ height: `${height}%` }}></div>
-                      <div className="text-xs text-gray-500 mt-2">{item.month}</div>
-                    </div>
-                  );
-                })
-              : // Daily view
-                dailyMood.map((item, index) => {
-                  const height = (item.value / 4) * 100;
-                  const isHighest = item.value === 4;
-                  return (
-                    <div key={index} className="flex flex-col items-center">
-                      <div className={`w-8 rounded-t-md ${isHighest ? 'bg-teal-500' : 'bg-blue-400'}`} style={{ height: `${height}%` }}></div>
-                      <div className="text-xs text-gray-500 mt-2">{item.day}</div>
-                    </div>
-                  );
-                })}
+          {/* Chart.js Bar Chart */}
+          <div className="h-64">
+            <Bar data={moodViewType === 'month' ? monthlyChartData : dailyChartData} options={chartOptions} />
           </div>
 
           {/* Chart Icon */}
