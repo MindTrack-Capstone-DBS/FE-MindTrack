@@ -16,14 +16,22 @@ const Navbar = ({ variant = 'light' }) => {
           <img src={logo2} alt="MindTrack Logo" className="w-60 max-w-full h-auto object-contain m-0 bg-none" />
         </div>
         <div className="flex items-center gap-9">
-          <Link to="/landing" className={`${textColor} font-semibold text-lg ${hoverColor} transition`}>Beranda</Link>
-          <Link to="/chat" className={`${textColor} font-semibold text-lg ${hoverColor} transition`}>ChatBox</Link>
-          <Link to="/login" className="bg-blue-900 text-white rounded-xl px-8 py-3 font-semibold text-base mr-2 hover:bg-blue-800 transition text-center">Sign In</Link>
-          <Link to="/register" className="bg-white text-blue-900 border-2 border-blue-900 rounded-xl px-8 py-3 font-semibold text-base hover:bg-blue-900 hover:text-white transition text-center">Sign Up</Link>
+          <Link to="/landing" className={`${textColor} font-semibold text-lg ${hoverColor} transition`}>
+            Beranda
+          </Link>
+          <Link to="/chat" className={`${textColor} font-semibold text-lg ${hoverColor} transition`}>
+            ChatBox
+          </Link>
+          <Link to="/login" className="bg-blue-900 text-white rounded-xl px-8 py-3 font-semibold text-base mr-2 hover:bg-blue-800 transition text-center">
+            Sign In
+          </Link>
+          <Link to="/register" className="bg-white text-blue-900 border-2 border-blue-900 rounded-xl px-8 py-3 font-semibold text-base hover:bg-blue-900 hover:text-white transition text-center">
+            Sign Up
+          </Link>
         </div>
       </div>
     </nav>
   );
 };
 
-export default Navbar; 
+export default Navbar;

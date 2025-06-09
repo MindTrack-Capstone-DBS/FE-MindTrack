@@ -5,9 +5,10 @@ import Register from './pages/Register-Page/RegisterPage';
 import LandingPage from './pages/landing-page/LandingPage';
 import Profile from './pages/profile/Profile';
 import ChatBox from './pages/chatbox/ChatBox';
-import MoodJournal from "./pages/journal/MoodJournal";
+import MoodJournal from './pages/journal/MoodJournal';
 import './App.css';
 import JournalHistory from './pages/journal/JournalHistory';
+import Dashboard from './pages/Dashboard-Page/Dashboard-Page';
 
 function App() {
   // Check if user is logged in
@@ -27,6 +28,7 @@ function App() {
           {/* Home and Profile now public */}
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/chat" element={<ChatBox />} />
           <Route path="/journal" element={<MoodJournal />} />
           <Route path="/journal/history" element={<JournalHistory />} />
