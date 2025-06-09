@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import {
-Facebook,
-Instagram,
-Linkedin,
-Youtube,
-ChevronDown,
-ChevronUp,
-NotebookPen,
-BookText
+  ChevronDown,
+  ChevronUp,
+  NotebookPen,
+  BookText
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Footer from '../../components/Footer';
 
 // Contoh entri jurnal
 const journalEntries = [
@@ -156,47 +153,7 @@ return (
     </main>
     </div>
 
-    {/* Footer */}
-    <footer className="bg-[#f5f7fa] pt-10 pb-6 border-t border-[#e6edfa] w-full rounded-t-3xl shadow-[0_-2px_16px_rgba(33,56,144,0.06)] relative mt-6">
-    <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6 md:px-10 items-start">
-        <div className="flex flex-col gap-2">
-        <div className="text-xl text-blue-900 font-extrabold mb-2">MindTrack</div>
-        <div className="text-blue-400">Track your mind, improve your life.</div>
-        <div className="flex gap-4 mt-3">
-            <a href="#"><Facebook size={28} /></a>
-            <a href="#"><Linkedin size={28} /></a>
-            <a href="#"><Youtube size={28} /></a>
-            <a href="#"><Instagram size={28} /></a>
-        </div>
-        </div>
-        <div className="flex flex-col md:flex-row gap-8 justify-center">
-        <div>
-            <div className="font-bold mb-1 text-blue-900">Fitur</div>
-            <ul className="space-y-1 text-blue-900 text-sm">
-            <li>Jurnal Harian</li>
-            <li>Analisis Emosi</li>
-            <li>Rekomendasi</li>
-            </ul>
-        </div>
-        <div>
-            <div className="font-bold mb-1 text-blue-900">Bantuan</div>
-            <ul className="space-y-1 text-blue-900 text-sm">
-            <li>FAQ</li>
-            <li>Kontak</li>
-            <li>Tentang Kami</li>
-            </ul>
-        </div>
-        </div>
-        <div className="flex flex-col gap-1 text-blue-900">
-        <div className="font-bold">Hubungi Kami:</div>
-        <div>support@mindtrack.com</div>
-        <div>+62 812-3456-7890</div>
-        </div>
-    </div>
-    <div className="text-center text-blue-400 text-sm mt-8 border-t border-[#e6edfa] pt-5">
-        &copy; {new Date().getFullYear()} MindTrack.
-    </div>
-    </footer>
+    <Footer />
 </div>
 );
 };
