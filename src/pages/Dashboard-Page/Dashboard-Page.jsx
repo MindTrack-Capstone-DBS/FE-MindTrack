@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar';
+import Navbar from '../../components/Navbar';
 import DashboardContent from '../../components/DashboardContent';
 import Footer from '../../components/Footer';
 
@@ -59,12 +59,12 @@ const Dashboard = () => {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar - fixed, non-scrollable */}
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50">
+      {/* Navbar - fixed at top */}
+      <Navbar isLandingPage={false} />
 
-      {/* Main Content - scrollable */}
-      <div className="flex-1 flex flex-col overflow-auto">
+      {/* Main Content - scrollable with padding for navbar */}
+      <div className="pt-20 flex-1 flex flex-col overflow-auto">
         <DashboardContent userData={userData} dashboardData={dashboardData} />
         <Footer />
       </div>
