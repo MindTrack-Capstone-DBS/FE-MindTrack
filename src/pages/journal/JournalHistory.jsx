@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import {
-  ChevronDown,
-  ChevronUp,
-  NotebookPen,
-  BookText
+ChevronDown,
+ChevronUp,
+NotebookPen,
+BookText
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Footer from '../../components/Footer';
+import Navbar from "../../components/Navbar";
+
 
 // Contoh entri jurnal
 const journalEntries = [
@@ -26,68 +28,12 @@ content: `Pagi ini aku merasa sedikit lesu. Bangun lebih lambat dari biasanya da
 
 const JournalHistory = () => {
 const [openIndex, setOpenIndex] = useState(null);
-const [isJournalMenuOpen, setIsJournalMenuOpen] = useState(false); // ✅ ditambahkan di sini
 
 return (
 <div className="min-h-screen bg-gray-50 flex flex-col relative">
     <div className="flex flex-1">
     {/* Sidebar */}
-    <aside className="w-64 bg-white shadow-lg p-6 flex flex-col gap-8">
-        <div className="flex items-center gap-3">
-        <img
-            src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/uz2qkAlQfq/xvqa2q92_expires_30_days.png"
-            alt="MindTrack Logo"
-            className="w-45 h-25"
-        />
-        </div>
-        <nav className="flex flex-col gap-4 text-gray-800 font-semibold">
-        <a href="/landing" className="hover:text-blue-600 flex items-center gap-2">
-            <span className="text-lg">🕒</span>
-            Dashboard
-        </a>
-        <a href="/chat" className="hover:text-blue-600 flex items-center gap-2">
-            <span className="text-lg">💬</span>
-            Chatbox
-        </a>
-
-        {/* Journal Dropdown */}
-        <div>
-            <button
-            onClick={() => setIsJournalMenuOpen(!isJournalMenuOpen)}
-            className="w-full flex items-center justify-between px-4 py-2 rounded-lg bg-blue-600 text-white transition"
-            >
-            <div className="flex items-center gap-2">
-                <NotebookPen className="w-5 h-5" />
-                <span>Journal</span>
-            </div>
-            {isJournalMenuOpen ? (
-                <ChevronUp className="w-4 h-4" />
-            ) : (
-                <ChevronDown className="w-4 h-4" />
-            )}
-            </button>
-
-            {isJournalMenuOpen && (
-            <div className="mt-2 ml-6 flex flex-col gap-2 text-sm text-blue-900">
-                <a
-                href="/journal"
-                className="flex items-center gap-2 px-2 py-1 rounded hover:bg-blue-100 transition"
-                >
-                <NotebookPen className="w-4 h-4" />
-                Journal Entry
-                </a>
-                <a
-                href="/journal/history"
-                className="flex items-center gap-2 px-2 py-1 rounded hover:bg-blue-100 transition"
-                >
-                <BookText className="w-4 h-4" />
-                Riwayat Jurnal
-                </a>
-            </div>
-            )}
-        </div>
-        </nav>
-    </aside>
+    <Navbar />
 
     {/* Main Content */}
     <main className="flex-1 p-10">
