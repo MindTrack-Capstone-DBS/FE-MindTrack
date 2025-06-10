@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import SidebarProfile from '../../components/SidebarProfile';
-import ProfileHeader from '../../components/ProfileHeader';
+import Footer from '../../components/Footer';
+import Navbar from '../../components/Navbar';
 import ProfileForm from '../../components/ProfileForm';
+import ProfileHeader from '../../components/ProfileHeader'; // Import ProfileHeader
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('account');
@@ -48,39 +49,42 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col md:flex-row font-sans">
-      <SidebarProfile userData={userData} onEditPhoto={handleEditPhoto} />
-      <main className="flex-1 flex flex-col items-center py-10 px-4 md:px-16">
-        <div className="w-full max-w-2xl">
-          <ProfileHeader />
-          <div className="flex gap-8 border-b border-blue-100 mb-8">
-            <button onClick={() => setActiveTab('account')} className={`pb-2 font-semibold transition ${activeTab === 'account' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>Informasi Akun</button>
-            <button onClick={() => setActiveTab('security')} className={`pb-2 font-semibold transition ${activeTab === 'security' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>Keamanan & Password</button>
-          </div>
-          {activeTab === 'account' && (
-            <ProfileForm
-              isEditing={isEditing}
-              editedData={editedData}
-              handleChange={handleChange}
-              handleEdit={handleEdit}
-              handleSave={handleSave}
-              handleCancel={handleCancel}
-              genderOptions={genderOptions}
-              days={days}
-              months={months}
-              years={years}
-            />
-          )}
-          {activeTab === 'security' && (
-            <div className="bg-white rounded-2xl shadow p-8 mb-8">
-              <h2 className="text-lg font-bold text-blue-900 mb-6">Keamanan & Password</h2>
-              <p className="text-blue-900">Fitur pengaturan password dan keamanan akan segera hadir.</p>
+    <div className="mt-20 flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex-grow bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center font-sans">
+        <main className="flex-1 flex flex-col items-center py-10 px-4 md:px-16">
+          <div className="w-full max-w-2xl">
+            <ProfileHeader />
+            <div className="flex gap-8 border-b border-blue-100 mb-8">
+              <button onClick={() => setActiveTab('account')} className={`pb-2 font-semibold transition ${activeTab === 'account' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>Informasi Akun</button>
+              <button onClick={() => setActiveTab('security')} className={`pb-2 font-semibold transition ${activeTab === 'security' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>Keamanan & Password</button>
             </div>
-          )}
-        </div>
-      </main>
+            {activeTab === 'account' && (
+              <ProfileForm
+                isEditing={isEditing}
+                editedData={editedData}
+                handleChange={handleChange}
+                handleEdit={handleEdit}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+                genderOptions={genderOptions}
+                days={days}
+                months={months}
+                years={years}
+              />
+            )}
+            {activeTab === 'security' && (
+              <div className="bg-white rounded-2xl shadow p-8 mb-8">
+                <h2 className="text-lg font-bold text-blue-900 mb-6">Keamanan & Password</h2>
+                <p className="text-blue-900">Fitur pengaturan password dan keamanan akan segera hadir.</p>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+      <Footer />
     </div>
   );
 };
 
-export default Profile; 
+export default Profile;
