@@ -33,11 +33,9 @@ const Footer = () => {
           </div>
           <div className="flex flex-col gap-2 min-w-[120px]">
             <div className="text-blue-900 font-bold mb-1">Bantuan</div>
-            <div className="text-blue-900 font-medium cursor-pointer hover:underline">FAQ</div>
+            <Link to="/faq" className="text-blue-900 font-medium cursor-pointer hover:underline">FAQ</Link>
             <div className="text-blue-900 font-medium cursor-pointer hover:underline">Kontak</div>
-            <Link to="/aboutUs" className="text-blue-900 font-medium cursor-pointer hover:underline">
-              Tentang Kami
-            </Link>
+            <Link to="/aboutUs" className="text-blue-900 font-medium cursor-pointer hover:underline">Tentang Kami</Link>
           </div>
         </div>
         <div className="flex flex-col gap-2 text-blue-900 font-medium">
