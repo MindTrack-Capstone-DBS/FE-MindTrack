@@ -30,7 +30,7 @@ const JournalHistory = () => {
 const [openIndex, setOpenIndex] = useState(null);
 
 return (
-<div className="min-h-screen bg-gray-50 flex flex-col relative">
+<div className="top-20 min-h-screen bg-gray-50 flex flex-col relative">
     <div className="flex flex-1">
     {/* Sidebar */}
     <Navbar />

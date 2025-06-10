@@ -1,5 +1,6 @@
 import React from 'react';
 import { Facebook, Linkedin, Youtube, Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom'; // Import Link
 
 const Footer = () => {
   return (
@@ -34,7 +35,9 @@ const Footer = () => {
             <div className="text-blue-900 font-bold mb-1">Bantuan</div>
             <div className="text-blue-900 font-medium cursor-pointer hover:underline">FAQ</div>
             <div className="text-blue-900 font-medium cursor-pointer hover:underline">Kontak</div>
-            <div className="text-blue-900 font-medium cursor-pointer hover:underline">Tentang Kami</div>
+            <Link to="/aboutUs" className="text-blue-900 font-medium cursor-pointer hover:underline">
+              Tentang Kami
+            </Link>
           </div>
         </div>
         <div className="flex flex-col gap-2 text-blue-900 font-medium">
@@ -50,4 +53,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; 
+export default Footer;

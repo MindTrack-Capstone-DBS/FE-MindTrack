@@ -9,6 +9,7 @@ import MoodJournal from './pages/journal/MoodJournal';
 import './App.css';
 import JournalHistory from './pages/journal/JournalHistory';
 import Dashboard from './pages/Dashboard-Page/Dashboard-Page';
+import AboutUs from './pages/aboutUs/aboutUs'
 
 function App() {
   // Check if user is logged in
@@ -40,6 +41,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aboutUs"
+            element={
+              <ProtectedRoute>
+                <AboutUs />
               </ProtectedRoute>
             }
           />

@@ -81,10 +81,10 @@ return (
     </div>
 
     {/* Save Button - Fixed at bottom right */}
-    <div className="absolute bottom-6 right-6 z-50">
+    <div className="absolute bottom-80 right-10 z-50">
     <button
         onClick={() => alert("Pressed!")}
-        className="bg-blue-900 text-white py-3 px-8 rounded-xl shadow-lg hover:brightness-110 transition"
+        className="h-12 w-80 bg-blue-900 text-white py-3 px-8 rounded-xl shadow-lg hover:brightness-110 transition"
     >
         Save Entry
     </button>
