@@ -48,7 +48,7 @@ const LandingPage = () => {
         }}
       >
         <div className="absolute inset-0 bg-blue-900/35 rounded-b-3xl z-0"></div>
-        <Navbar variant="light" />
+        <Navbar variant="light" isLandingPage={true} />
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 drop-shadow-lg">Track Your Mental Wellbeing</h1>
           <p className="text-lg md:text-2xl text-white/90 max-w-2xl mx-auto drop-shadow">Monitor your daily emotional state and get personalized suggestions for maintaining mental wellness.</p>
@@ -60,7 +60,9 @@ const LandingPage = () => {
         </div>
         <div className="max-w-xl text-blue-900 text-left md:text-left text-lg font-normal">
           <h2 className="text-2xl md:text-2xl font-normal leading-relaxed">
-            <b className="font-bold">MindTrack</b> helps you understand your mental state in depth through daily journals and periodic questionnaires. Using sentiment analysis and text processing technology, the platform <span className="font-bold text-blue-900">detects signs of stress, anxiety, and depression</span> and then recommends the right activities to <span className="font-bold text-blue-900">support your emotional balance</span>. Start your day with more calm and control with <b className="font-bold">MindTrack</b>.
+            <b className="font-bold">MindTrack</b> helps you understand your mental state in depth through daily journals and periodic questionnaires. Using sentiment analysis and text processing technology, the platform{' '}
+            <span className="font-bold text-blue-900">detects signs of stress, anxiety, and depression</span> and then recommends the right activities to <span className="font-bold text-blue-900">support your emotional balance</span>. Start
+            your day with more calm and control with <b className="font-bold">MindTrack</b>.
           </h2>
         </div>
       </section>
@@ -78,4 +80,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage; 
+export default LandingPage;
