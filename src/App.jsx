@@ -9,11 +9,12 @@ import MoodJournal from './pages/journal/MoodJournal';
 import './App.css';
 import JournalHistory from './pages/journal/JournalHistory';
 import Dashboard from './pages/Dashboard-Page/Dashboard-Page';
-import AboutUs from './pages/aboutUs/aboutUs'
+import AboutUs from './pages/aboutUs/aboutUs';
+import FAQPage from './pages/faq/faq'; // Updated import
 
 function App() {
   // Check if user is logged in
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true' || false;
 
   // Protected Route component
   const ProtectedRoute = ({ children }) => {
@@ -52,6 +53,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/faq"
+            element={
+              <ProtectedRoute>
+                <FAQPage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/profile"
             element={
