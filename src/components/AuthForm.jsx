@@ -52,7 +52,7 @@ function AuthForm({ isLogin = true }) {
           alert(data.message || 'Login gagal');
         }
       } else {
-        // Register logic - tidak perlu diubah
+        // Register logic
         const response = await fetch('http://localhost:5000/api/auth/register', {
           method: 'POST',
           headers: {
@@ -80,76 +80,103 @@ function AuthForm({ isLogin = true }) {
     navigate(isLogin ? '/register' : '/login');
   };
 
-  // Kode return tidak berubah
   return (
-    <div className="w-full md:w-1/2 flex justify-center items-center bg-white overflow-x-hidden p-4 md:p-0">
-      <div className="w-full max-w-sm">
-        <h2 className="text-xl mb-15 font-sans text-center md:text-left md:absolute md:top-10 md:left-10">
+    <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-white h-screen p-4 lg:p-8 relative overflow-y-auto">
+      {/* Header tetap di pojok kiri atas */}
+      <div className="absolute top-4 left-4 lg:top-8 lg:left-8 z-10">
+        <h2 className="text-sm sm:text-base lg:text-lg xl:text-xl font-sans">
           <b>MindTrack</b> - <span className="text-blue-900 font-bold">Track Your Stress</span>
         </h2>
-        <p className="text-4xl font-bold mb-10 mt-20 text-center text-gray font-sans">{isLogin ? 'Login' : 'Register'}</p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col ">
+      {/* Container form yang terpusat */}
+      <div className="w-full max-w-md flex-shrink-0">
+        {/* Title */}
+        <div className="text-center mb-6">
+          <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 font-sans">
+            {isLogin ? 'Login' : 'Register'}
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           {!isLogin && (
             <>
-              <label className="text-lg font-medium text-black ">Nama</label>
-              <input
-                type="text"
-                name="name"
-                placeholder="Masukkan nama anda"
-                value={formData.name}
-                onChange={handleChange}
-                className="px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none mb-3"
-                required
-              />
+              <div>
+                <label className="block text-sm sm:text-base font-medium text-black mb-2">Nama</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Masukkan nama anda"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2.5 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none focus:border-blue-500 transition-colors text-sm"
+                  required
+                />
+              </div>
 
-              <label className="text-lg font-medium text-black mb-1">No Telepon</label>
-              <input
-                type="text"
-                name="phone"
-                placeholder="Masukkan no telepon anda"
-                value={formData.phone}
-                onChange={handleChange}
-                className="px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none mb-3"
-                required
-              />
+              <div>
+                <label className="block text-sm sm:text-base font-medium text-black mb-2">No Telepon</label>
+                <input
+                  type="text"
+                  name="phone"
+                  placeholder="Masukkan no telepon anda"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2.5 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none focus:border-blue-500 transition-colors text-sm"
+                  required
+                />
+              </div>
             </>
           )}
 
-          <label className="text-lg font-medium text-black mb-1">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Masukkan email anda"
-            value={formData.email}
-            onChange={handleChange}
-            className="px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none mb-3"
-            required
-          />
-
-          <label className="text-lg font-medium text-black mb-1">Password</label>
-          <div className="relative flex items-center">
+          <div>
+            <label className="block text-sm sm:text-base font-medium text-black mb-2">Email</label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              placeholder="Masukkan Password anda"
-              value={formData.password}
+              type="email"
+              name="email"
+              placeholder="Masukkan email anda"
+              value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none pr-10"
+              className="w-full px-3 py-2.5 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none focus:border-blue-500 transition-colors text-sm"
               required
             />
-            <button type="button" className="absolute right-3 text-gray-700" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
           </div>
 
-          <button type="submit" className="bg-blue-900 text-white rounded-lg py-3.5 text-lg font-semibold mt-6 hover:bg-blue-500 transition-colors">
+          <div>
+            <label className="block text-sm sm:text-base font-medium text-black mb-2">Password</label>
+            <div className="relative flex items-center">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                placeholder="Masukkan Password anda"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-3 py-2.5 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none pr-12 focus:border-blue-500 transition-colors text-sm"
+                required
+              />
+              <button 
+                type="button" 
+                className="absolute right-3 text-gray-700 hover:text-gray-900 transition-colors" 
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            className="w-full bg-blue-900 text-white rounded-lg py-3 text-base font-semibold mt-6 hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
             {isLogin ? 'Login' : 'Register'}
           </button>
 
-          <div className="mt-6 text-center text-black">
+          <div className="mt-6 text-center text-black text-sm">
             {isLogin ? 'Belum punya akun?' : 'Sudah punya akun?'}{' '}
-            <span className="text-blue-700 font-semibold underline cursor-pointer ml-1" onClick={toggleAuthPage}>
+            <span 
+              className="text-blue-700 font-semibold underline cursor-pointer ml-1 hover:text-blue-800 transition-colors" 
+              onClick={toggleAuthPage}
+            >
               {isLogin ? 'Register' : 'Login'}
             </span>
           </div>

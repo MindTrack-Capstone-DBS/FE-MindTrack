@@ -56,7 +56,7 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
         <div className="flex items-center gap-2">
           <img src={logo2} alt="MindTrack Logo" className="w-40 max-w-full h-auto object-contain m-0 bg-none cursor-pointer" onClick={handleLogoClick} />
         </div>
-        
+
         {/* Center Navigation Menu */}
         <div className="flex items-center gap-9">
           {isLandingPage ? (
@@ -100,7 +100,7 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
 
               {/* Journal Dropdown */}
               <div className="relative">
-                <button onClick={toggleJournal} className={`${textColor} font-semibold text-lg ${hoverColor} transition flex items-center gap-1 ${(isJournalEntryActive() || isJournalHistoryActive()) ? 'border-b-2 border-blue-900' : ''}`}>
+                <button onClick={toggleJournal} className={`${textColor} font-semibold text-lg ${hoverColor} transition flex items-center gap-1 ${isJournalEntryActive() || isJournalHistoryActive() ? 'border-b-2 border-blue-900' : ''}`}>
                   Jurnal
                   {isJournalOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
@@ -142,9 +142,7 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
             // Profile section untuk Dashboard
             <>
               {/* Status (Anxiety) */}
-              <div className="bg-teal-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm">
-                {dashboardData?.stressLevel > 70 ? 'High Anxiety' : dashboardData?.stressLevel > 40 ? 'Moderate' : 'Low Anxiety'}
-              </div>
+              <div className="bg-teal-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm">{dashboardData?.stressLevel > 70 ? 'High Anxiety' : dashboardData?.stressLevel > 40 ? 'Moderate' : 'Low Anxiety'}</div>
 
               {/* Notification Icon */}
               <div className="relative">
