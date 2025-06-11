@@ -95,7 +95,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar - fixed at top */}
-      <Navbar isLandingPage={false} />
+      <Navbar isLandingPage={false} userData={userData} dashboardData={dashboardData} />
 
       {/* Main Content - scrollable with padding for navbar */}
       <div className="pt-20 flex-1 flex flex-col overflow-auto">

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Clock, Timer, Search, Bell, User, LogOut, Settings, ChevronDown, BarChart2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Clock, Timer, BarChart2 } from 'lucide-react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -8,8 +7,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const DashboardContent = ({ userData, dashboardData }) => {
-  const navigate = useNavigate();
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [moodViewType, setMoodViewType] = useState('month'); // 'month' or 'daily'
 
   // Data dummy untuk tampilan harian
@@ -76,74 +73,8 @@ const DashboardContent = ({ userData, dashboardData }) => {
     },
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('token');
-    localStorage.removeItem('userData');
-    navigate('/');
-    window.location.reload();
-  };
-
-  const toggleProfileMenu = () => {
-    setShowProfileMenu(!showProfileMenu);
-  };
-
   return (
     <main className="flex-1 p-6 md:p-10 overflow-auto">
-      {/* Header with Search, Notification, Status and Profile */}
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex-1">
-          <div className="relative max-w-md">
-            <input type="text" placeholder="Search" className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200" />
-            <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          {/* Status (Anxiety) */}
-          <div className="bg-teal-500 text-white px-4 py-1 rounded-full text-sm font-medium">Anxiety</div>
-
-          {/* Notification Icon */}
-          <div className="relative">
-            <button className="p-2 rounded-full hover:bg-gray-100">
-              <Bell className="w-6 h-6 text-gray-600" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-          </div>
-
-          {/* Profile with Dropdown */}
-          <div className="relative">
-            <button onClick={toggleProfileMenu} className="flex items-center gap-2 focus:outline-none">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-red-500 flex items-center justify-center text-white font-bold">
-                {userData?.name
-                  ? userData.name
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')
-                      .toUpperCase()
-                      .substring(0, 2)
-                  : 'U'}
-              </div>
-              <ChevronDown className="w-4 h-4 text-gray-600" />
-            </button>
-
-            {/* Dropdown Menu */}
-            {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-100">
-                <button onClick={() => navigate('/profile')} className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  <Settings className="w-4 h-4" />
-                  Pengaturan Akun
-                </button>
-                <button onClick={handleLogout} className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-gray-100">
-                  <LogOut className="w-4 h-4" />
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
       {/* Dashboard Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>

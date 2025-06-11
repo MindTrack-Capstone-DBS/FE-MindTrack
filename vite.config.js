@@ -6,7 +6,6 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [tailwindcss(), react()],
   define: {
-    // Jika Anda benar-benar perlu menggunakan process.env di beberapa tempat
     'process.env': {},
   },
 });
