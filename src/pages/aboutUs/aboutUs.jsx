@@ -3,42 +3,44 @@ import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
 import { motion } from 'framer-motion';
 import { useSpring, animated } from 'react-spring'; // Import React Spring
+import YongkyPhoto from '../../../src/assets/img/yongky.jpg'
+import AbelPhoto from '../../../src/assets/img/abel.jpg'
 
 const founders = [
 {
-name: 'Dian Pramudya',
+name: 'Jorji',
 photo: 'https://randomuser.me/api/portraits/men/32.jpg', // Replace with actual custom photo URL or local import
-title: 'Co-Founder & CEO',
+title: 'Front-End and Back-End Developer',
 bio: 'Visionary leader passionate about mental health and technology.',
 },
 {
-name: 'Maya Putri',
-photo: 'https://randomuser.me/api/portraits/women/44.jpg',
-title: 'Co-Founder & CTO',
+name: 'Abel',
+photo: AbelPhoto,
+title: 'Front-End and Back-End Developer',
 bio: 'Technical expert driving innovation and user experience.',
 },
 {
-name: 'Andi Wijaya',
-photo: 'https://randomuser.me/api/portraits/men/56.jpg',
-title: 'Co-Founder & Product Lead',
+name: 'Yongky',
+photo: YongkyPhoto,
+title: 'Front-End and Back-End Developer',
 bio: 'Focused on crafting intuitive journaling tools and features.',
 },
 {
-name: 'Dian Pramudya',
+name: 'Naufal',
 photo: 'https://randomuser.me/api/portraits/men/32.jpg', // Replace with actual custom photo URL or local import
-title: 'Co-Founder & CEO',
+title: 'Machine Learning Engineer',
 bio: 'Visionary leader passionate about mental health and technology.',
 },
 {
-name: 'Maya Putri',
+name: 'Farhan',
 photo: 'https://randomuser.me/api/portraits/women/44.jpg',
-title: 'Co-Founder & CTO',
+title: 'Machine Learning Engineer',
 bio: 'Technical expert driving innovation and user experience.',
 },
 {
-name: 'Andi Wijaya',
+name: 'Fadhil',
 photo: 'https://randomuser.me/api/portraits/men/56.jpg',
-title: 'Co-Founder & Product Lead',
+title: 'Machine Learning Engineer',
 bio: 'Focused on crafting intuitive journaling tools and features.',
 },
 ];

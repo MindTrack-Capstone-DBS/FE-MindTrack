@@ -136,12 +136,16 @@ const MoodJournal = () => {
         </main>
       </div>
 
-      {/* Save Button - Fixed at bottom right */}
-      <div className="absolute bottom-80 right-10 z-50">
-        <button onClick={handleSubmit} disabled={isSubmitting} className={`h-12 w-80 bg-blue-900 text-white py-3 px-8 rounded-xl shadow-lg hover:brightness-110 transition ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}>
+      <div className="absolute bottom-80 right-10 z-50 w-full max-w-xs">
+        <button
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className={`h-12 w-full bg-blue-900 text-white py-3 px-4 rounded-xl shadow-lg hover:brightness-110 transition ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+        >
           {isSubmitting ? 'Saving...' : 'Save Entry'}
         </button>
       </div>
+      
 
       <Footer />
     </div>
