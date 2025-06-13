@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Send, MoreVertical, ExternalLink, Paperclip, Smile, Mic, Pencil, Trash2, ChevronDown } from 'lucide-react';
 import * as tf from '@tensorflow/tfjs';
@@ -63,7 +64,7 @@ const ChatBox = () => {
           fetchMessages(activeSession.id);
         }
       } catch (error) {
-        console.error('Error fetching chats:', error);
+        console.error('Error parsing user data:', error);
       }
     };
 
@@ -394,7 +395,6 @@ const ChatBox = () => {
               </div>
             )}
           </div>
-          {/* Message input */}
           <div className="mt-auto pt-4">
             <div className="flex items-center gap-3 bg-white border border-blue-100 rounded-2xl px-6 py-4 shadow transition-all duration-200 focus-within:shadow-lg">
               <button className="text-gray-400 hover:text-blue-700 p-2 rounded-full transition mr-2">
@@ -425,19 +425,18 @@ const ChatBox = () => {
             </div>
           </div>
         </div>
-        {/* Sidebar */}
+
         <aside className="w-full md:w-[340px] flex-shrink-0 flex flex-col gap-6">
           {/* User Info Card */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 flex flex-col gap-4 items-center border border-blue-50 relative">
-            <div className="relative mb-2">
-              <img src={logo2} alt="Avatar" className="w-16 h-16 rounded-full object-cover border-2 border-blue-100" />
-              <span className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex flex-col items-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-red-500 flex items-center justify-center text-white mb-2">{userData?.name ? userData.name.charAt(0).toUpperCase() : 'U'}</div>
+              <div className="text-center">
+                <div className="font-semibold text-blue-900 text-lg">MindTrack AI</div>
+                <div className="text-xs text-gray-400">Personal Mental Health Assistant</div>
+              </div>
+              <MoreVertical className="text-gray-400 w-5 h-5 cursor-pointer absolute top-8 right-8" />
             </div>
-            <div className="text-center">
-              <div className="font-semibold text-blue-900 text-lg">MindTrack AI</div>
-              <div className="text-xs text-gray-400">Personal Mental Health Assistant</div>
-            </div>
-            <MoreVertical className="text-gray-400 w-5 h-5 cursor-pointer absolute top-8 right-8" />
           </div>
           {/* Recent Chats Card */}
           <div className="bg-white rounded-3xl shadow-lg p-8 flex-1 flex flex-col gap-4 border border-blue-50">
