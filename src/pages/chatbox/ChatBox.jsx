@@ -14,6 +14,30 @@ const ChatBox = () => {
   const [model, setModel] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currentSessionId, setCurrentSessionId] = useState(null);
+  const navigate = useNavigate();
+      const [userData, setUserData] = useState({
+      name: 'User',
+      });
+  
+      // Mendapatkan data user dari localStorage saat komponen dimount
+      useEffect(() => {
+      // Cek apakah user sudah login
+      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+      if (!isAuthenticated) {
+          navigate('/');
+          return;
+      }
+  
+      const storedUserData = localStorage.getItem('userData');
+      if (storedUserData) {
+          try {
+          const parsedUserData = JSON.parse(storedUserData);
+          setUserData(parsedUserData);
+          } catch (error) {
+          console.error('Error parsing user data:', error);
+          }
+      }
+      }, [navigate]);
 
   // Load TensorFlow.js model (Graph Model)
   useEffect(() => {
@@ -357,7 +381,7 @@ const ChatBox = () => {
 
   return (
     <div className="mt-20 min-h-screen bg-[#fafbfc] flex flex-col">
-      <Navbar variant="dark" />
+      <Navbar variant="dark" userData={userData} />
       <div className="flex flex-1 w-full max-w-[1600px] mx-auto mt-10 gap-6 px-4 md:px-8 pb-8 pt-4">
         {/* Chat Area */}
         <div className="flex-1 flex flex-col bg-white rounded-[2.5rem] shadow-xl p-6 md:p-10 min-h-[600px] border border-blue-50">
@@ -428,16 +452,16 @@ const ChatBox = () => {
 
         <aside className="w-full md:w-[340px] flex-shrink-0 flex flex-col gap-6">
           {/* User Info Card */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <div className="flex flex-col items-center">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-red-500 flex items-center justify-center text-white mb-2">{userData?.name ? userData.name.charAt(0).toUpperCase() : 'U'}</div>
-              <div className="text-center">
-                <div className="font-semibold text-blue-900 text-lg">MindTrack AI</div>
-                <div className="text-xs text-gray-400">Personal Mental Health Assistant</div>
-              </div>
-              <MoreVertical className="text-gray-400 w-5 h-5 cursor-pointer absolute top-8 right-8" />
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="flex flex-col items-center">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-red-500 flex items-center justify-center text-white mb-2">
+              {userData?.name ? userData.name.charAt(0).toUpperCase() : 'U'}
             </div>
+            <span className="font-semibold text-blue-700 mb-1">{userData?.name || 'User'}</span>
+            <span className="text-sm text-gray-500">MindTrack Personal Assistant</span>
           </div>
+        </div>
+
           {/* Recent Chats Card */}
           <div className="bg-white rounded-3xl shadow-lg p-8 flex-1 flex flex-col gap-4 border border-blue-50">
             <div className="font-semibold text-blue-900 mb-2 text-base flex items-center gap-2 select-none">
