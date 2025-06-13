@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
 import { motion } from 'framer-motion';
@@ -46,9 +47,33 @@ bio: 'Focused on crafting intuitive journaling tools and features.',
 ];
 
 const AboutUs = () => {
+const navigate = useNavigate();
+    const [userData, setUserData] = useState({
+    name: 'User',
+    });
+
+    // Mendapatkan data user dari localStorage saat komponen dimount
+    useEffect(() => {
+    // Cek apakah user sudah login
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (!isAuthenticated) {
+        navigate('/');
+        return;
+    }
+
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+        try {
+        const parsedUserData = JSON.parse(storedUserData);
+        setUserData(parsedUserData);
+        } catch (error) {
+        console.error('Error parsing user data:', error);
+        }
+    }
+    }, [navigate]);
 return (
 <div className="flex flex-col min-h-screen">
-    <Navbar />
+    <Navbar  userData={userData}/>
 
     <main className="flex-1 bg-white text-gray-700">
     <div className="mt-20 max-w-[1200px] mx-auto px-6 pt-16 pb-20">

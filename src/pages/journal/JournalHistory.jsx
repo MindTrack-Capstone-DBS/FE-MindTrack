@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronUp, NotebookPen, BookText } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Footer from '../../components/Footer';
@@ -9,6 +10,31 @@ const JournalHistory = () => {
   const [journalEntries, setJournalEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    name: 'User',
+  });
+
+   // Mendapatkan data user dari localStorage saat komponen dimount
+    useEffect(() => {
+      // Cek apakah user sudah login
+      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+      if (!isAuthenticated) {
+        navigate('/');
+        return;
+      }
+  
+      const storedUserData = localStorage.getItem('userData');
+      if (storedUserData) {
+        try {
+          const parsedUserData = JSON.parse(storedUserData);
+          setUserData(parsedUserData);
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      }
+    }, [navigate]);
+    
 
   useEffect(() => {
     const fetchJournals = async () => {
@@ -46,7 +72,7 @@ const JournalHistory = () => {
     <div className="top-20 min-h-screen bg-gray-50 flex flex-col relative">
       <div className="flex flex-1">
         {/* Sidebar */}
-        <Navbar />
+        <Navbar userData={userData} />
 
         {/* Main Content */}
         <main className="flex-1 p-10">

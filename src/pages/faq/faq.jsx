@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
 
@@ -36,10 +37,35 @@ const FAQPage = () => {
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+    const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    name: 'User',
+  });
+
+  // Mendapatkan data user dari localStorage saat komponen dimount
+  useEffect(() => {
+    // Cek apakah user sudah login
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (!isAuthenticated) {
+      navigate('/');
+      return;
+    }
+
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      try {
+        const parsedUserData = JSON.parse(storedUserData);
+        setUserData(parsedUserData);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }, [navigate]);
+  
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar userData={userData}/>
       <div className="mt-20 flex-grow">
         <main className="bg-white min-h-screen py-16 px-6">
           <div className="max-w-[1200px] mx-auto space-y-16">

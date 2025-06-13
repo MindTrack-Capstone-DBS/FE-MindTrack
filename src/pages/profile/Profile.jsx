@@ -50,7 +50,7 @@ const Profile = () => {
 
   return (
     <div className="mt-20 flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar  userData={userData} />
       <div className="flex-grow bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center font-sans">
         <main className="flex-1 flex flex-col items-center py-10 px-4 md:px-16">
           <div className="w-full max-w-2xl">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, NotebookPen, BookText } from 'lucide-react';
 import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
@@ -30,6 +30,9 @@ const MoodJournal = () => {
     }
 
     setIsSubmitting(true);
+
+
+
 
     try {
       const userData = JSON.parse(localStorage.getItem('userData'));
@@ -69,13 +72,15 @@ const MoodJournal = () => {
     } finally {
       setIsSubmitting(false);
     }
+
+
   };
 
   return (
     <div className="top-20 min-h-screen bg-gray-50 flex flex-col relative">
       <div className="flex flex-1">
         {/* Sidebar - fixed, non-scrollable */}
-        <Navbar />
+        <Navbar/>
 
         {/* Main Content */}
         <main className="flex-1 p-10 flex flex-col gap-6">
