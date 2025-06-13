@@ -27,7 +27,6 @@ const ChatBox = () => {
     <div className="mt-20 min-h-screen bg-[#fafbfc] flex flex-col">
       {/* Navbar */}
       <Navbar variant="dark" />
-      {/* Main Content */}
       <div className="flex flex-1 w-full max-w-[1600px] mx-auto mt-10 gap-6 px-4 md:px-8 pb-8 pt-4">
         {/* Chat Area */}
         <div className="flex-1 flex flex-col bg-white rounded-[2.5rem] shadow-xl p-6 md:p-10 min-h-[600px] border border-blue-50">
