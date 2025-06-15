@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Send, MoreVertical, ExternalLink, Pencil, ChevronDown, MessageSquare, Clock, Menu, X } from 'lucide-react';
+import { Send, ExternalLink, Pencil, ChevronDown, MessageSquare, Clock, Menu, X } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
@@ -12,7 +12,8 @@ const ChatBox = () => {
   const [currentSession, setCurrentSession] = useState(null);
   const [userData, setUserData] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Untuk mobile sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false); // Track if user has interacted
 
   // API base URL
   const API_BASE_URL = 'http://localhost:5000/api';
@@ -47,10 +48,12 @@ const ChatBox = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setChatHistory(response.data.sessions || []);
+
+      // Filter sessions that have messages (have been interacted with)
+      const sessionsWithMessages = response.data.sessions?.filter((session) => session.message_count > 0) || [];
+      setChatHistory(sessionsWithMessages);
     } catch (error) {
       console.error('Error fetching chat history:', error);
-      // Set empty array jika error
       setChatHistory([]);
     }
   };
@@ -66,8 +69,18 @@ const ChatBox = () => {
       });
 
       setCurrentSession({ id: sessionId });
-      setCurrentMessages(response.data.messages || []);
-      setIsSidebarOpen(false); // Close sidebar on mobile after selecting
+
+      // Ensure all message data including ML results are properly loaded
+      const messagesWithMLData = response.data.messages.map((msg) => ({
+        ...msg,
+        prediction: msg.predicted_class,
+        recommendations: msg.recommendations,
+        confidence: msg.stress_prediction,
+      }));
+
+      setCurrentMessages(messagesWithMLData);
+      setHasInteracted(true);
+      setIsSidebarOpen(false);
     } catch (error) {
       console.error('Error loading chat session:', error);
     }
@@ -103,6 +116,7 @@ const ChatBox = () => {
       );
 
       setCurrentSession(response.data.session);
+      setHasInteracted(false); // Reset interaction flag for new session
       setCurrentMessages([
         {
           id: Date.now(),
@@ -115,6 +129,7 @@ const ChatBox = () => {
       console.error('Error creating session:', error);
       // Fallback for offline mode
       setCurrentSession({ id: 'offline' });
+      setHasInteracted(false);
       setCurrentMessages([
         {
           id: Date.now(),
@@ -166,6 +181,12 @@ const ChatBox = () => {
       };
 
       setCurrentMessages((prev) => [...prev, botMessage]);
+
+      // Mark as interacted and refresh history only after first user message
+      if (!hasInteracted) {
+        setHasInteracted(true);
+        fetchChatHistory(); // Refresh history to include this session
+      }
     } catch (error) {
       console.error('Error sending message:', error);
       // Fallback response
@@ -191,7 +212,6 @@ const ChatBox = () => {
   // Update createNewChat function
   const createNewChat = () => {
     createNewSession();
-    fetchChatHistory();
     setIsSidebarOpen(false);
   };
 
@@ -227,14 +247,14 @@ const ChatBox = () => {
                   {chat.message}
 
                   {/* Show prediction and recommendations for bot messages */}
-                  {chat.is_bot && chat.prediction && (
+                  {chat.is_bot && (chat.prediction || chat.predicted_class) && (
                     <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <div className="text-xs lg:text-sm font-semibold text-blue-800 mb-2">Analysis: {chat.prediction}</div>
+                      <div className="text-xs lg:text-sm font-semibold text-blue-800 mb-2">Analysis: {chat.prediction || chat.predicted_class}</div>
                       {chat.recommendations && chat.recommendations.length > 0 && (
                         <div>
                           <div className="text-xs font-medium text-blue-700 mb-1">Recommendations:</div>
                           <ul className="text-xs text-blue-600 space-y-1">
-                            {chat.recommendations.slice(0, 3).map((rec, idx) => (
+                            {chat.recommendations.slice(0, 30).map((rec, idx) => (
                               <li key={idx} className="flex items-start">
                                 <span className="inline-block w-1 h-1 bg-blue-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
                                 {rec}
@@ -248,7 +268,7 @@ const ChatBox = () => {
 
                   <span className="text-xs text-gray-400 ml-2">{new Date(chat.created_at).toLocaleTimeString()}</span>
                 </div>
-                {!chat.is_bot && <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-blue-700 flex items-center justify-center font-bold text-white text-sm lg:text-base mt-1 shadow-sm flex-shrink-0">U</div>}
+                {/* Removed user avatar - only show MT avatar for bot */}
               </div>
             ))}
             {isLoading && (

@@ -93,9 +93,7 @@ function AuthForm({ isLogin = true }) {
       <div className="w-full max-w-md flex-shrink-0">
         {/* Title */}
         <div className="text-center mb-6">
-          <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 font-sans">
-            {isLogin ? 'Login' : 'Register'}
-          </p>
+          <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 font-sans">{isLogin ? 'Login' : 'Register'}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
@@ -154,29 +152,19 @@ function AuthForm({ isLogin = true }) {
                 className="w-full px-3 py-2.5 bg-white border-2 border-gray-200 rounded-lg text-black placeholder-gray-500 outline-none pr-12 focus:border-blue-500 transition-colors text-sm"
                 required
               />
-              <button 
-                type="button" 
-                className="absolute right-3 text-gray-700 hover:text-gray-900 transition-colors" 
-                onClick={() => setShowPassword(!showPassword)}
-              >
+              <button type="button" className="absolute right-3 text-gray-700 hover:text-gray-900 transition-colors" onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
 
-          <button 
-            type="submit" 
-            className="w-full bg-blue-900 text-white rounded-lg py-3 text-base font-semibold mt-6 hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
+          <button type="submit" className="w-full bg-blue-900 text-white rounded-lg py-3 text-base font-semibold mt-6 hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             {isLogin ? 'Login' : 'Register'}
           </button>
 
           <div className="mt-6 text-center text-black text-sm">
             {isLogin ? 'Belum punya akun?' : 'Sudah punya akun?'}{' '}
-            <span 
-              className="text-blue-700 font-semibold underline cursor-pointer ml-1 hover:text-blue-800 transition-colors" 
-              onClick={toggleAuthPage}
-            >
+            <span className="text-blue-700 font-semibold underline cursor-pointer ml-1 hover:text-blue-800 transition-colors" onClick={toggleAuthPage}>
               {isLogin ? 'Register' : 'Login'}
             </span>
           </div>
