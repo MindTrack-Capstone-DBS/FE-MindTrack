@@ -51,7 +51,7 @@ const founders = [
 ];
 
 const AboutUs = () => {
-const navigate = useNavigate();
+    const navigate = useNavigate();
     const [userData, setUserData] = useState({
     name: 'User',
     });

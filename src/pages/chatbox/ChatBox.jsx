@@ -124,7 +124,7 @@ const ChatBox = () => {
 
   return (
     <div className="mt-20 min-h-screen bg-[#fafbfc] flex flex-col">
-      <Navbar variant="dark" />
+      <Navbar variant="dark" userData={userData} />
       <div className="flex flex-1 w-full max-w-[1600px] mx-auto mt-10 gap-6 px-4 md:px-8 pb-8 pt-4">
         {/* Chat Area */}
         <div className="flex-1 flex flex-col bg-white rounded-[2.5rem] shadow-xl p-6 md:p-10 min-h-[600px] border border-blue-50">
@@ -214,6 +214,8 @@ const ChatBox = () => {
               </div>
               <MoreVertical className="text-gray-400 w-5 h-5 cursor-pointer absolute top-8 right-8" />
             </div>
+            <span className="font-semibold text-blue-700 mb-1">{userData?.name || 'User'}</span>
+            <span className="text-sm text-gray-500">MindTrack Personal Assistant</span>
           </div>
 
           {/* Quick Actions */}
