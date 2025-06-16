@@ -11,6 +11,7 @@ import JournalHistory from './pages/journal/JournalHistory';
 import Dashboard from './pages/Dashboard-Page/Dashboard-Page';
 import AboutUs from './pages/aboutUs/aboutUs';
 import FAQPage from './pages/faq/faq';
+import { MentalStatusProvider } from './context/MentalStatusContext';
 
 function App() {
   // Check if user is logged in
@@ -25,65 +26,67 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {/* Default route - redirect to dashboard if authenticated, landing if not */}
-          <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
+    <MentalStatusProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            {/* Default route - redirect to dashboard if authenticated, landing if not */}
+            <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />} />
 
-          {/* Public routes */}
-          <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LoginPage />} />
-          <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} />
-          <Route path="/landing" element={<LandingPage />} />
+            {/* Public routes */}
+            <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <LoginPage />} />
+            <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} />
+            <Route path="/landing" element={<LandingPage />} />
 
-          {/* Public pages - No authentication required */}
-          <Route path="/aboutUs" element={<AboutUs />} />
-          <Route path="/faq" element={<FAQPage />} />
+            {/* Public pages - No authentication required */}
+            <Route path="/aboutUs" element={<AboutUs />} />
+            <Route path="/faq" element={<FAQPage />} />
 
-          {/* Protected routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <ProtectedRoute>
-                <ChatBox />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/journal"
-            element={
-              <ProtectedRoute>
-                <MoodJournal />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/journal/history"
-            element={
-              <ProtectedRoute>
-                <JournalHistory />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </div>
-    </Router>
+            {/* Protected routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chat"
+              element={
+                <ProtectedRoute>
+                  <ChatBox />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/journal"
+              element={
+                <ProtectedRoute>
+                  <MoodJournal />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/journal/history"
+              element={
+                <ProtectedRoute>
+                  <JournalHistory />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </MentalStatusProvider>
   );
 }
 

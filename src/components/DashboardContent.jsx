@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Timer, BarChart2, Check } from 'lucide-react';
+import { BarChart2, Check, X } from 'lucide-react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import Lottie from 'lottie-react';
 import mentalHealthAnim from '../assets/images/mental-health.json';
 
+// Add import for mental status context
+import { useMentalStatus } from '../context/MentalStatusContext';
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const DashboardContent = ({ userData, dashboardData }) => {
+  // Add mental status hook
+  const { mentalStatus, updateMentalStatus } = useMentalStatus();
+
   const [moodViewType, setMoodViewType] = useState('month');
   const [journalEntries, setJournalEntries] = useState([]);
   const [journalStats, setJournalStats] = useState({
@@ -23,6 +29,9 @@ const DashboardContent = ({ userData, dashboardData }) => {
   // State untuk recommendations dari chat AI
   const [recommendations, setRecommendations] = useState([]);
   const [completedActivities, setCompletedActivities] = useState([]);
+  const [removedRecommendations, setRemovedRecommendations] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [alternativeRecommendations, setAlternativeRecommendations] = useState([]);
 
   // Load completed activities dari localStorage saat component mount
   useEffect(() => {
@@ -54,28 +63,101 @@ const DashboardContent = ({ userData, dashboardData }) => {
     // Pindahkan dari recommendations ke completedActivities
     setCompletedActivities((prev) => {
       const updated = [...prev, newCompletedActivity];
-      // Simpan ke localStorage
       localStorage.setItem('completedActivities', JSON.stringify(updated));
       return updated;
     });
 
     // Hapus dari recommendations
-    setRecommendations((prev) => prev.filter((_, i) => i !== index));
+    const updatedRecommendations = recommendations.filter((_, i) => i !== index);
+    setRecommendations(updatedRecommendations);
+
+    // Check if all recommendations are completed
+    if (updatedRecommendations.length === 0 && removedRecommendations.length === 0) {
+      setShowConfirmation(true);
+    }
   };
 
-  // Fungsi untuk menghapus completed activity (opsional)
-  const removeCompletedActivity = (activityId) => {
-    setCompletedActivities((prev) => {
-      const updated = prev.filter((activity) => activity.id !== activityId);
-      localStorage.setItem('completedActivities', JSON.stringify(updated));
-      return updated;
-    });
+  // Mark recommendation as not applicable (remove with X)
+  const markAsNotApplicable = (recommendation, index) => {
+    const removedRecommendation = {
+      id: Date.now(),
+      text: recommendation,
+      removedAt: new Date().toISOString(),
+    };
+
+    setRemovedRecommendations((prev) => [...prev, removedRecommendation]);
+
+    // Remove from recommendations
+    const updatedRecommendations = recommendations.filter((_, i) => i !== index);
+    setRecommendations(updatedRecommendations);
+
+    // Check if all recommendations are completed or removed
+    if (updatedRecommendations.length === 0 && completedActivities.length === 0) {
+      setShowConfirmation(true);
+    }
   };
 
-  // Fungsi untuk clear semua completed activities (opsional)
-  const clearAllCompletedActivities = () => {
-    setCompletedActivities([]);
-    localStorage.removeItem('completedActivities');
+  // Handle confirmation response
+  const handleConfirmationResponse = (isImproved) => {
+    if (isImproved) {
+      // Reset mental status to normal
+      updateMentalStatus('Normal');
+      setShowConfirmation(false);
+      // Clear completed activities and removed recommendations
+      setCompletedActivities([]);
+      setRemovedRecommendations([]);
+      localStorage.removeItem('completedActivities');
+    } else {
+      // Show alternative recommendations
+      const alternatives = generateAlternativeRecommendations(mentalStatus);
+      setAlternativeRecommendations(alternatives);
+      setRecommendations(alternatives);
+      setShowConfirmation(false);
+      // Clear previous activities
+      setCompletedActivities([]);
+      setRemovedRecommendations([]);
+      localStorage.removeItem('completedActivities');
+    }
+  };
+
+  // Generate alternative recommendations based on mental status
+  const generateAlternativeRecommendations = (status) => {
+    const alternativesByStatus = {
+      depression: [
+        'Try light therapy for 30 minutes daily',
+        'Practice gratitude journaling every morning',
+        'Engage in creative activities like drawing or music',
+        'Consider joining a support group',
+        'Schedule regular social activities with friends',
+      ],
+      anxiety: ['Practice progressive muscle relaxation', 'Try aromatherapy with lavender or chamomile', 'Limit caffeine intake', 'Practice grounding techniques (5-4-3-2-1 method)', 'Consider cognitive behavioral therapy techniques'],
+      stress: ['Implement time management techniques', "Practice saying 'no' to additional commitments", 'Try stress-relief apps or guided meditations', 'Schedule regular breaks during work', 'Consider massage therapy or acupuncture'],
+      bipolar: ['Maintain a consistent sleep schedule', 'Track mood changes in a daily journal', 'Avoid alcohol and recreational drugs', 'Practice mindfulness meditation', 'Consider professional counseling'],
+      suicidal: [
+        'Contact a mental health professional immediately',
+        'Reach out to trusted friends or family members',
+        'Call a suicide prevention hotline',
+        'Remove potential means of self-harm from environment',
+        'Create a safety plan with coping strategies',
+      ],
+      'personality disorder': [
+        'Practice dialectical behavior therapy skills',
+        'Work on emotional regulation techniques',
+        'Consider group therapy sessions',
+        'Practice interpersonal effectiveness skills',
+        'Engage in mindfulness-based stress reduction',
+      ],
+    };
+
+    return (
+      alternativesByStatus[status.toLowerCase()] || [
+        'Practice regular self-care activities',
+        'Maintain a healthy sleep schedule',
+        'Engage in regular physical exercise',
+        'Practice mindfulness or meditation',
+        'Consider professional mental health support',
+      ]
+    );
   };
 
   // Fetch recommendations dari chat AI
@@ -285,14 +367,32 @@ const DashboardContent = ({ userData, dashboardData }) => {
         {/* Treatment Suggestions */}
         <div className="bg-white rounded-2xl shadow-md p-6 min-h-[180px]">
           <h3 className="text-base font-semibold text-gray-700 mb-4">Treatment Suggestions</h3>
-          {recommendations.length > 0 ? (
+
+          {showConfirmation ? (
+            <div className="text-center py-8">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4">Are you feeling better with your {mentalStatus.toLowerCase()} condition?</h4>
+              <div className="flex justify-center gap-4">
+                <button onClick={() => handleConfirmationResponse(true)} className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                  Yes, I feel better
+                </button>
+                <button onClick={() => handleConfirmationResponse(false)} className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                  No, I need more help
+                </button>
+              </div>
+            </div>
+          ) : recommendations.length > 0 ? (
             <ul className="space-y-3 text-sm text-gray-700">
               {recommendations.map((recommendation, index) => (
-                <li key={index} className="flex justify-between items-center group">
+                <li key={index} className="flex justify-between items-center">
                   <span className="flex-1 pr-2">• {recommendation}</span>
-                  <button onClick={() => markAsCompleted(recommendation, index)} className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 rounded-full hover:bg-green-100 text-green-600" title="Mark as completed">
-                    <Check className="w-4 h-4" />
-                  </button>
+                  <div className="flex gap-2">
+                    <button onClick={() => markAsCompleted(recommendation, index)} className="p-1 rounded-full bg-green-100 hover:bg-green-200 text-green-600 transition-colors" title="Mark as completed">
+                      <Check className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => markAsNotApplicable(recommendation, index)} className="p-1 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-colors" title="Not applicable for me">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>

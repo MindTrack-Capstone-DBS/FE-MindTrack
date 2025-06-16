@@ -3,6 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo2 from '../assets/images/Logo-cropped.png';
 import { ChevronDown, ChevronUp, Bell, Settings, LogOut, Menu, X } from 'lucide-react';
 
+// Tambahkan import
+import { useMentalStatus } from '../context/MentalStatusContext';
+
 const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardData }) => {
   const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -59,6 +62,29 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
   const textColor = 'text-blue-900';
   const hoverColor = 'hover:text-blue-700';
   const bgColor = 'bg-white/60 backdrop-blur-lg shadow-sm transition-all duration-300';
+
+  // Tambahkan hook untuk context
+  const { mentalStatus } = useMentalStatus();
+
+  // Fungsi untuk menentukan warna status
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case 'depression':
+        return 'bg-blue-600';
+      case 'suicidal':
+        return 'bg-red-600';
+      case 'anxiety':
+        return 'bg-yellow-500';
+      case 'bipolar':
+        return 'bg-purple-600';
+      case 'stress':
+        return 'bg-orange-500';
+      case 'personality disorder':
+        return 'bg-pink-600';
+      default: // Normal
+        return 'bg-green-500';
+    }
+  };
 
   return (
     <>
@@ -153,10 +179,8 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
             ) : (
               // Profile section untuk Dashboard
               <>
-                {/* Status (Anxiety) */}
-                <div className="bg-teal-500 text-white px-3 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-medium shadow-sm">
-                  {dashboardData?.stressLevel > 70 ? 'High Anxiety' : dashboardData?.stressLevel > 40 ? 'Moderate' : 'Low Anxiety'}
-                </div>
+                {/* Status (Mental Health) - Ganti kode yang ada */}
+                <div className={`${getStatusColor(mentalStatus)} text-white px-3 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-medium shadow-sm`}>{mentalStatus}</div>
 
                 {/* Notification Icon */}
                 <div className="relative">
@@ -208,8 +232,8 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
           <div className="lg:hidden flex items-center gap-2">
             {!isLandingPage && (
               <div className="flex items-center gap-2">
-                {/* Mobile Status */}
-                <div className="bg-teal-500 text-white px-2 py-1 rounded-full text-xs font-medium">{dashboardData?.stressLevel > 70 ? 'High' : dashboardData?.stressLevel > 40 ? 'Mod' : 'Low'}</div>
+                {/* Mobile Status - Ganti kode yang ada */}
+                <div className={`${getStatusColor(mentalStatus)} text-white px-2 py-1 rounded-full text-xs font-medium`}>{mentalStatus.length > 5 ? mentalStatus.substring(0, 5) + '...' : mentalStatus}</div>
 
                 {/* Mobile Notification */}
                 <div className="relative">

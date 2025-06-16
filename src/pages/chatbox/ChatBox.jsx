@@ -5,7 +5,13 @@ import { Send, ExternalLink, Pencil, ChevronDown, MessageSquare, Clock, Menu, X,
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
+// Tambahkan import
+import { useMentalStatus } from '../../context/MentalStatusContext';
+
 const ChatBox = () => {
+  // Add this line to destructure updateMentalStatus from the hook
+  const { updateMentalStatus } = useMentalStatus();
+
   const [currentMessages, setCurrentMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -183,6 +189,11 @@ const ChatBox = () => {
 
       setCurrentMessages((prev) => [...prev, botMessage]);
 
+      // Update mental status berdasarkan prediksi model
+      if (response.data.mlResult?.prediction) {
+        updateMentalStatus(response.data.mlResult.prediction);
+      }
+
       // Mark as interacted and refresh history only after first user message
       if (!hasInteracted) {
         setHasInteracted(true);
@@ -326,7 +337,7 @@ const ChatBox = () => {
                 className="flex-1 bg-transparent outline-none text-sm lg:text-base text-gray-700"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyUp={handleKeyPress}
                 disabled={isLoading}
               />
               <button
