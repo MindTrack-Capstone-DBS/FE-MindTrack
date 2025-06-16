@@ -27,7 +27,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row gap-8 md:gap-16 justify-center w-full">
           <div className="flex flex-col gap-2 min-w-[120px]">
             <div className="text-blue-900 font-bold mb-1">Fitur</div>
-            <div className="text-blue-900 font-medium cursor-pointer hover:underline">Jurnal Harian</div>
+            <Link to="/journal" className="text-blue-900 font-medium cursor-pointer hover:underline">Jurnal Harian</Link>
             <div className="text-blue-900 font-medium cursor-pointer hover:underline">Rekomendasi</div>
           </div>
           <div className="flex flex-col gap-2 min-w-[120px]">
