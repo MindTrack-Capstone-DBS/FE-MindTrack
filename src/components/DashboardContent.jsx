@@ -166,7 +166,7 @@ const DashboardContent = ({ userData, dashboardData }) => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/chats/latest-recommendations`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://mindtrack-be-production-8ea6.up.railway.app'}/api/chats/latest-recommendations`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -187,7 +187,7 @@ const DashboardContent = ({ userData, dashboardData }) => {
   useEffect(() => {
     const fetchJournalData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/journals`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://mindtrack-be-production-8ea6.up.railway.app'}/api/journals`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

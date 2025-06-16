@@ -25,7 +25,7 @@ function AuthForm({ isLogin = true }) {
     try {
       if (isLogin) {
         // Login logic
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/login`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://mindtrack-be-production-8ea6.up.railway.app'}/api/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ function AuthForm({ isLogin = true }) {
         }
       } else {
         // Register logic
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/register`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://mindtrack-be-production-8ea6.up.railway.app'}/api/auth/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

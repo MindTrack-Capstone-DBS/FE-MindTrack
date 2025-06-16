@@ -66,7 +66,7 @@ const MoodJournal = () => {
         mood_value: selectedMood.value,
       };
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/journals`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://mindtrack-be-production-8ea6.up.railway.app'}/api/journals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

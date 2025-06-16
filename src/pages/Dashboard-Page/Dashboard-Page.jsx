@@ -60,7 +60,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchJournalData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/journals/stats`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://mindtrack-be-production-8ea6.up.railway.app'}/api/journals/stats`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
