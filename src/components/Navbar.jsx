@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo2 from '../assets/images/Logo-cropped.png';
-import { ChevronDown, ChevronUp, Bell, Settings, LogOut, Menu, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, Settings, LogOut, Menu, X } from 'lucide-react';
 
 // Tambahkan import
 import { useMentalStatus } from '../context/MentalStatusContext';
@@ -179,16 +179,8 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
             ) : (
               // Profile section untuk Dashboard
               <>
-                {/* Status (Mental Health) - Ganti kode yang ada */}
+                {/* Status (Mental Health) */}
                 <div className={`${getStatusColor(mentalStatus)} text-white px-3 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-medium shadow-sm`}>{mentalStatus}</div>
-
-                {/* Notification Icon */}
-                <div className="relative">
-                  <button className="p-2 rounded-full hover:bg-blue-50 transition-colors">
-                    <Bell className="w-5 h-5 lg:w-6 lg:h-6 text-blue-900" />
-                    <span className="absolute top-1 right-1 w-2 h-2 lg:w-3 lg:h-3 bg-red-500 rounded-full border-2 border-white"></span>
-                  </button>
-                </div>
 
                 {/* Profile with Dropdown */}
                 <div className="relative">
@@ -232,16 +224,8 @@ const Navbar = ({ variant = 'light', isLandingPage = false, userData, dashboardD
           <div className="lg:hidden flex items-center gap-2">
             {!isLandingPage && (
               <div className="flex items-center gap-2">
-                {/* Mobile Status - Ganti kode yang ada */}
+                {/* Mobile Status */}
                 <div className={`${getStatusColor(mentalStatus)} text-white px-2 py-1 rounded-full text-xs font-medium`}>{mentalStatus.length > 5 ? mentalStatus.substring(0, 5) + '...' : mentalStatus}</div>
-
-                {/* Mobile Notification */}
-                <div className="relative">
-                  <button className="p-1.5 rounded-full hover:bg-blue-50 transition-colors">
-                    <Bell className="w-5 h-5 text-blue-900" />
-                    <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                  </button>
-                </div>
               </div>
             )}
 
