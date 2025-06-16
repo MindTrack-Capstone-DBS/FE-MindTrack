@@ -16,12 +16,12 @@ const Profile = () => {
     phone: '',
   });
   const [editedData, setEditedData] = useState({ ...userData });
-  
+
   // State untuk password
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
   const [isEditingPassword, setIsEditingPassword] = useState(false);
 
@@ -33,19 +33,19 @@ const Profile = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/users/profile', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/profile`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       const user = response.data.user;
       const formattedData = {
         name: user.name || '',
         email: user.email || '',
         phone: user.phone || '',
       };
-      
+
       setUserData(formattedData);
       setEditedData(formattedData);
       setLoading(false);
@@ -68,12 +68,12 @@ const Profile = () => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/users/profile', editedData, {
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/profile`, editedData, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       setUserData({ ...editedData });
       setIsEditing(false);
       alert('Profil berhasil diperbarui!');
@@ -101,7 +101,7 @@ const Profile = () => {
     setPasswordData({
       currentPassword: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmPassword: '',
     });
   };
 
@@ -110,7 +110,7 @@ const Profile = () => {
     setPasswordData({
       currentPassword: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmPassword: '',
     });
   };
 
@@ -133,20 +133,24 @@ const Profile = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/users/change-password', {
-        currentPassword: passwordData.currentPassword,
-        newPassword: passwordData.newPassword
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      await axios.put(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/change-password`,
+        {
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
-      
+      );
+
       setIsEditingPassword(false);
       setPasswordData({
         currentPassword: '',
         newPassword: '',
-        confirmPassword: ''
+        confirmPassword: '',
       });
       alert('Password berhasil diubah!');
     } catch (error) {
@@ -179,46 +183,16 @@ const Profile = () => {
           <div className="w-full max-w-2xl">
             <ProfileHeader />
             <div className="flex gap-8 border-b border-blue-100 mb-8">
-              <button 
-                onClick={() => setActiveTab('account')} 
-                className={`pb-2 font-semibold transition ${
-                  activeTab === 'account' 
-                    ? 'border-b-2 border-blue-700 text-blue-900' 
-                    : 'text-blue-400'
-                }`}
-              >
+              <button onClick={() => setActiveTab('account')} className={`pb-2 font-semibold transition ${activeTab === 'account' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>
                 Informasi Akun
               </button>
-              <button 
-                onClick={() => setActiveTab('security')} 
-                className={`pb-2 font-semibold transition ${
-                  activeTab === 'security' 
-                    ? 'border-b-2 border-blue-700 text-blue-900' 
-                    : 'text-blue-400'
-                }`}
-              >
+              <button onClick={() => setActiveTab('security')} className={`pb-2 font-semibold transition ${activeTab === 'security' ? 'border-b-2 border-blue-700 text-blue-900' : 'text-blue-400'}`}>
                 Keamanan & Password
               </button>
             </div>
-            {activeTab === 'account' && (
-              <ProfileForm
-                isEditing={isEditing}
-                editedData={editedData}
-                handleChange={handleChange}
-                handleEdit={handleEdit}
-                handleSave={handleSave}
-                handleCancel={handleCancel}
-              />
-            )}
+            {activeTab === 'account' && <ProfileForm isEditing={isEditing} editedData={editedData} handleChange={handleChange} handleEdit={handleEdit} handleSave={handleSave} handleCancel={handleCancel} />}
             {activeTab === 'security' && (
-              <PasswordForm
-                isEditing={isEditingPassword}
-                passwordData={passwordData}
-                handleChange={handlePasswordChange}
-                handleEdit={handleEditPassword}
-                handleSave={handleSavePassword}
-                handleCancel={handleCancelPassword}
-              />
+              <PasswordForm isEditing={isEditingPassword} passwordData={passwordData} handleChange={handlePasswordChange} handleEdit={handleEditPassword} handleSave={handleSavePassword} handleCancel={handleCancelPassword} />
             )}
           </div>
         </main>

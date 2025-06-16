@@ -166,7 +166,7 @@ const DashboardContent = ({ userData, dashboardData }) => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch(`http://localhost:5000/api/chats/latest-recommendations`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/chats/latest-recommendations`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
