@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Send, ExternalLink, Pencil, ChevronDown, MessageSquare, Clock, Menu, X } from 'lucide-react';
+import { Send, ExternalLink, Pencil, ChevronDown, MessageSquare, Clock, Menu, X, Trash2 } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
@@ -13,7 +13,8 @@ const ChatBox = () => {
   const [userData, setUserData] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false); // Track if user has interacted
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(null); // Tambahkan state ini
 
   // API base URL
   const API_BASE_URL = 'http://localhost:5000/api';
@@ -215,9 +216,46 @@ const ChatBox = () => {
     setIsSidebarOpen(false);
   };
 
+  // Add delete session function
+  const deleteSession = async (sessionId, event) => {
+    // Prevent triggering loadChatSession when clicking delete
+    event.stopPropagation();
+
+    if (!confirm('Apakah Anda yakin ingin menghapus chat ini?')) {
+      return;
+    }
+
+    setIsDeleting(sessionId);
+
+    try {
+      const token = getAuthToken();
+      await axios.delete(`${API_BASE_URL}/chats/sessions/${sessionId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Remove from chat history
+      setChatHistory((prev) => prev.filter((session) => session.id !== sessionId));
+
+      // If deleted session is current session, create new session
+      if (currentSession?.id === sessionId) {
+        createNewSession();
+      }
+
+      console.log('Chat session deleted successfully');
+    } catch (error) {
+      console.error('Error deleting chat session:', error);
+      alert('Gagal menghapus chat. Silakan coba lagi.');
+    } finally {
+      setIsDeleting(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#fafbfc] flex flex-col">
-      <Navbar variant="dark" userData={userData} />
+      {/* Sembunyikan menu hamburger navbar dengan prop khusus */}
+      <Navbar variant="dark" userData={userData} hideHamburger={true} />
 
       {/* Mobile Header dengan Menu Button */}
       <div className="sm:hidden bg-white shadow-sm border-b px-4 py-3 mt-20 flex items-center justify-between">
@@ -348,21 +386,32 @@ const ChatBox = () => {
             <div className="space-y-2 max-h-48 lg:max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-gray-100">
               {chatHistory.length > 0 ? (
                 chatHistory.map((session) => (
-                  <button
+                  <div
                     key={session.id}
-                    onClick={() => loadChatSession(session.id)}
-                    className={`w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors ${currentSession?.id === session.id ? 'bg-blue-100 border border-blue-200' : 'border border-gray-100 hover:border-blue-200'}`}
+                    className={`relative group w-full text-left p-3 rounded-lg hover:bg-blue-50 transition-colors ${currentSession?.id === session.id ? 'bg-blue-100 border border-blue-200' : 'border border-gray-100 hover:border-blue-200'}`}
                   >
-                    <div className="font-medium text-gray-800 text-xs lg:text-sm truncate">{session.title || `Chat ${new Date(session.created_at).toLocaleDateString()}`}</div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      {new Date(session.created_at).toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'short',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </div>
-                  </button>
+                    <button onClick={() => loadChatSession(session.id)} className="w-full text-left" disabled={isDeleting === session.id}>
+                      <div className="font-medium text-gray-800 text-xs lg:text-sm truncate pr-8">{session.title || `Chat ${new Date(session.created_at).toLocaleDateString()}`}</div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {new Date(session.created_at).toLocaleDateString('en-US', {
+                          day: 'numeric',
+                          month: 'short',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </div>
+                    </button>
+
+                    {/* Delete Button */}
+                    <button
+                      onClick={(e) => deleteSession(session.id, e)}
+                      disabled={isDeleting === session.id}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-100 text-red-500 hover:text-red-700"
+                      title="Hapus chat"
+                    >
+                      {isDeleting === session.id ? <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div> : <Trash2 className="w-4 h-4" />}
+                    </button>
+                  </div>
                 ))
               ) : (
                 <div className="text-xs lg:text-sm text-gray-500 text-center py-4">No chat history yet</div>

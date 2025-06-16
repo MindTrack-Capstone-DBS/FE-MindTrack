@@ -10,7 +10,7 @@ import './App.css';
 import JournalHistory from './pages/journal/JournalHistory';
 import Dashboard from './pages/Dashboard-Page/Dashboard-Page';
 import AboutUs from './pages/aboutUs/aboutUs';
-import FAQPage from './pages/faq/faq'; // Updated import
+import FAQPage from './pages/faq/faq';
 
 function App() {
   // Check if user is logged in
@@ -36,6 +36,10 @@ function App() {
           <Route path="/register" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} />
           <Route path="/landing" element={<LandingPage />} />
 
+          {/* Public pages - No authentication required */}
+          <Route path="/aboutUs" element={<AboutUs />} />
+          <Route path="/faq" element={<FAQPage />} />
+
           {/* Protected routes */}
           <Route
             path="/dashboard"
@@ -45,24 +49,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/aboutUs"
-            element={
-              <ProtectedRoute>
-                <AboutUs />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/faq"
-            element={
-              <ProtectedRoute>
-                <FAQPage />
-              </ProtectedRoute>
-            }
-          />
-
           <Route
             path="/profile"
             element={

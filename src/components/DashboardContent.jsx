@@ -329,10 +329,10 @@ const DashboardContent = ({ userData, dashboardData }) => {
         </div>
 
         {/* Consultation Card */}
-        <div className="bg-white rounded-2xl shadow-md p-6 w-full min-h-[360px]">
+        <div className="bg-white rounded-2xl shadow-md p-6 w-full min-h-[360px] relative overflow-hidden">
           <h2 className="text-lg font-semibold text-gray-800 mb-3">Need Direct Consultation?</h2>
           <p className="text-sm text-gray-600 mb-4">If you need to speak directly with a mental health professional, feel free to contact one of our trusted partners.</p>
-          <ul className="space-y-3 text-sm text-gray-700">
+          <ul className="space-y-3 text-sm text-gray-700 relative z-10">
             <li>
               <span className="font-medium">Dr. Nina Kusuma</span> – Clinical Psychologist <br />
               <span className="text-gray-500">
@@ -362,9 +362,11 @@ const DashboardContent = ({ userData, dashboardData }) => {
               </span>
             </li>
           </ul>
+          <div className="absolute bottom-0  right-0  w-[300px] h-[300px] opacity-50">
+            <Lottie animationData={mentalHealthAnim} loop={true} className="w-full h-full object-contain" />
+          </div>
         </div>
       </div>
-      <Lottie animationData={mentalHealthAnim} loop={true} className="absolute max-w-[250px] w-full right-60 bottom-3" />
     </div>
   );
 };
