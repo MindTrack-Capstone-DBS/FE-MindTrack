@@ -33,14 +33,24 @@ const DashboardContent = ({ userData, dashboardData }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [alternativeRecommendations, setAlternativeRecommendations] = useState([]);
 
-  // Load completed activities dari localStorage saat component mount
+  // Load removed recommendations dari localStorage saat component mount
   useEffect(() => {
     const savedCompletedActivities = localStorage.getItem('completedActivities');
+    const savedRemovedRecommendations = localStorage.getItem('removedRecommendations');
+
     if (savedCompletedActivities) {
       try {
         setCompletedActivities(JSON.parse(savedCompletedActivities));
       } catch (error) {
         console.error('Error parsing completed activities:', error);
+      }
+    }
+
+    if (savedRemovedRecommendations) {
+      try {
+        setRemovedRecommendations(JSON.parse(savedRemovedRecommendations));
+      } catch (error) {
+        console.error('Error parsing removed recommendations:', error);
       }
     }
   }, []);
@@ -85,7 +95,11 @@ const DashboardContent = ({ userData, dashboardData }) => {
       removedAt: new Date().toISOString(),
     };
 
-    setRemovedRecommendations((prev) => [...prev, removedRecommendation]);
+    const updatedRemovedRecommendations = [...removedRecommendations, removedRecommendation];
+    setRemovedRecommendations(updatedRemovedRecommendations);
+
+    // Save to localStorage
+    localStorage.setItem('removedRecommendations', JSON.stringify(updatedRemovedRecommendations));
 
     // Remove from recommendations
     const updatedRecommendations = recommendations.filter((_, i) => i !== index);
@@ -166,6 +180,7 @@ const DashboardContent = ({ userData, dashboardData }) => {
   };
 
   // Fetch recommendations dari chat AI
+  // Fetch recommendations dari chat AI
   const fetchChatRecommendations = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -180,7 +195,16 @@ const DashboardContent = ({ userData, dashboardData }) => {
       if (response.ok) {
         const data = await response.json();
         if (data.recommendations && data.recommendations.length > 0) {
-          setRecommendations(data.recommendations.slice(0, 5));
+          // Filter out already completed or removed recommendations
+          const savedCompleted = JSON.parse(localStorage.getItem('completedActivities') || '[]');
+          const savedRemoved = JSON.parse(localStorage.getItem('removedRecommendations') || '[]');
+
+          const completedTexts = savedCompleted.map((item) => item.text);
+          const removedTexts = savedRemoved.map((item) => item.text);
+
+          const filteredRecommendations = data.recommendations.filter((rec) => !completedTexts.includes(rec) && !removedTexts.includes(rec));
+
+          setRecommendations(filteredRecommendations.slice(0, 5));
         }
       }
     } catch (error) {
