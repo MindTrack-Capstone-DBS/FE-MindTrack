@@ -98,25 +98,30 @@ const DashboardContent = ({ userData, dashboardData }) => {
   };
 
   // Handle confirmation response
+  // Handle confirmation response
   const handleConfirmationResponse = (isImproved) => {
     if (isImproved) {
       // Reset mental status to normal
       updateMentalStatus('Normal');
       setShowConfirmation(false);
-      // Clear completed activities and removed recommendations
-      setCompletedActivities([]);
+      // Clear only recommendations and removed recommendations
+      // Keep completed activities as history
+      setRecommendations([]);
       setRemovedRecommendations([]);
-      localStorage.removeItem('completedActivities');
+      // DON'T clear completed activities - they should remain as history
+      // setCompletedActivities([]);
+      // localStorage.removeItem('completedActivities');
     } else {
       // Show alternative recommendations
       const alternatives = generateAlternativeRecommendations(mentalStatus);
       setAlternativeRecommendations(alternatives);
       setRecommendations(alternatives);
       setShowConfirmation(false);
-      // Clear previous activities
-      setCompletedActivities([]);
+      // Clear only removed recommendations, keep completed activities
       setRemovedRecommendations([]);
-      localStorage.removeItem('completedActivities');
+      // DON'T clear completed activities - they should remain as history
+      // setCompletedActivities([]);
+      // localStorage.removeItem('completedActivities');
     }
   };
 
